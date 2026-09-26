@@ -1,0 +1,388 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+/* Default (Light Mode) */
+:root {
+  --scrollbar-bg: #f1f1f1;
+  --scrollbar-thumb: #c1c1c1;
+  --scrollbar-thumb-hover: #a8a8a8;
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --scrollbar-bg: #1e1e1e;
+    --scrollbar-thumb: #555;
+    --scrollbar-thumb-hover: #777;
+  }
+}
+
+/* Scrollbar for Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-bg);
+}
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+main{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.left {
+    background-color: #121212;
+     display: flex;
+    height:  84vh;
+    width: 30vw;
+      position: relative;
+}
+
+.right {
+    height: 84vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 0, 0);
+    border: 2px solid #121212;
+    box-sizing: border-box;
+     position: relative;
+     display: flex;
+}
+
+.side {
+    display: flex;
+    gap: 100px;
+    padding: 20px;
+    border: 2px solid #121212;
+     height: 84vh;
+     box-sizing: border-box;
+     width: 34vw;
+        position: relative;
+        justify-content: start;
+}
+
+.cards {
+    position: relative;
+    top: 10px;
+     height: 80vh;
+     box-sizing: border-box; 
+     width: 45vw;   
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 10px 20px;
+}
+
+.cont{
+    display: flex;
+    height: 66vh;
+    width: 100vw;
+    position: relative;
+    /* align-items: center; */
+}
+
+
+.top #logo {
+    height: 50px;
+    width: 50px;
+}
+.top #home {
+    height: 50px;
+    width: 50px;
+}
+.top .search {
+    display: flex;
+    align-items: center;
+}
+.top input {
+    padding: 17px;
+    border: none;
+    border-radius: 20px;
+    background-color: #0f0f0f;
+    color: rgb(255, 255, 255);
+    width: 280px;
+}
+.top input::placeholder {
+    color: rgb(129, 113, 113);
+}
+
+.top{
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+    gap: 26px;
+    background-color: black;
+    width: 100vw;
+    top: 0px;
+    position: relative;
+    height: 14vh;
+    /* padding: 0px 20px; */
+    z-index: 1;
+}
+.buttons {
+    display: flex;
+    gap: 20px;
+    position: relative;
+    left: -20px;
+}
+.Signup {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer ;
+    width: 100px;
+}
+.login {
+    width: 100px;
+    background-color: white;
+    color: black;
+    border: none;
+   
+    border-radius: 20px;
+    cursor: pointer;
+}
+.first {
+    display: flex;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+
+.album-card {
+    width: 240px;
+    padding: 15px;
+    border-radius: 12px;
+    background-color: #131313;
+    color: white;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.album-card:hover {
+    background-color: #0c0c0c;
+}
+
+.album-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.album-card h2 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 5px 0;
+}
+
+.album-card h4 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #b3b3b3;
+}
+
+
+.side .buttons {
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    /* border: 2px solid #121212; */
+    
+     box-sizing: border-box;
+     width: 2vw;
+     height: 0vh;
+     position: relative;
+     left: -5px;
+  
+}
+
+.side .buttons .previous, .side .buttons .next, .side .buttons .play, .side .buttons #minus5sec, .side .buttons #plus5sec {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+  
+    border-radius: 20px;
+    cursor: pointer ;
+    padding: 10px 20px;
+    width: 50px;
+}
+
+.songlist ul li {
+    list-style: none;
+    cursor: pointer;
+    font-size: 12px; /* increase for readability */
+    color: #b3b3b3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid #b6b6b6;
+    padding: 10px 12px;
+    margin: 12px 0;
+    /* ❌ remove transform */
+}
+
+.songinfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1; /* ✅ take available space */
+    justify-content: flex-start; /* ✅ align left */
+}
+
+.playnow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto; /* ✅ push to right */
+}
+
+.songlist {
+    height: 500px;
+    overflow: auto;
+}
+
+.seekbar {
+    width: 5px;
+    height: 100%;
+    background-color: #333;
+    border-radius: 2.5px;
+    margin-top: 20px;
+    position: relative;
+    bottom: 15px;
+    cursor: pointer;
+}
+.circle {
+    width: 15px;
+    height: 15px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 0%;
+    left: -4px;
+    cursor: pointer;
+}
+
+
+.infos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+
+}
+.infos h2 {
+    font-size: 18px;
+    font-weight: 500;
+}
+.infos .songinfo {
+    font-size: 20px;
+    color: #b3b3b3;
+    position: relative;
+    bottom: 200px;
+    right: 20px;
+    width: auto;
+}
+
+.infos .songinfo:hover {
+    color: white;
+    cursor: pointer;
+} 
+
+.songtime {
+    position: absolute;
+    bottom: 400px;
+    right: 140px;
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+#voulme {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    bottom: 350px;
+    right: 100px;
+}
+ #disc {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #00e5ff, #0066ff);
+      
+      pointer-events: none;
+      box-shadow: 0 0 20px #00e5ff, 0 0 60px #0066ff;
+      right: 20px;
+       transition: transform 0.2s linear;
+          position: relative;
+    border-radius: 50%;
+    background: conic-gradient(
+        black,
+        #333,
+        black,
+        #555,
+        black
+    );
+     border-radius: 50%;
+    box-shadow: 0 0 20px rgba(255,255,255,0.4);
+    }
+  
+
+.rotate {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+#disc::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 4px;
+    height: 30px;
+    background: white;
+    transform: translateX(-50%);
+}
