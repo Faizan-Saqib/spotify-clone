@@ -120,10 +120,8 @@ async function displayAlbums() {
         });
     });
 }
-
 async function main() {
     await getsongs("songs/cs")
-    playMusic(songs[0], true)
 
     displayAlbums()
 
