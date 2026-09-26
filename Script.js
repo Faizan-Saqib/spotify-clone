@@ -29,7 +29,7 @@ async function getsongs(folder) {
 const playMusic = (track, puase=false)=>{
     crruntsong.src = `/${currFolder}/` + track
     if (!puase) {
-        crruntsong.play()
+       crruntsong.play().catch(e => console.error(e))
         play.querySelector("img").src = "pause.svg"
     }
     document.querySelector(".songinfo").innerHTML = decodeURI (track.replaceAll("%20", " ").replaceAll("%5C", ""))  
