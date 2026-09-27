@@ -1571,3 +1571,90 @@ main {
     }
 
 }
+
+
+
+/* =========================================================
+   ICON VISIBILITY FIX
+========================================================= */
+
+.invert {
+    filter: invert(1);
+}
+
+
+/* PLAYER BUTTONS — CLEAR & VISIBLE */
+
+.side .player-buttons > div {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #242424;
+
+    border: 1px solid #444;
+
+    border-radius: 50%;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.side .player-buttons > div:hover {
+    background: #333;
+
+    border-color: #666;
+
+    transform: scale(1.08);
+}
+
+.side .player-buttons > div img {
+    width: 18px;
+    height: 18px;
+
+    display: block;
+
+    opacity: 1;
+}
+
+
+/* MAIN PLAY BUTTON */
+
+.side .player-buttons .play {
+    width: 52px;
+    height: 52px;
+
+    background: #ffffff;
+
+    border: 2px solid #ffffff;
+
+    border-radius: 50%;
+}
+
+.side .player-buttons .play img {
+    width: 21px;
+    height: 21px;
+
+    display: block;
+
+    /* IMPORTANT: don't override .invert */
+    filter: invert(1);
+}
+
+
+/* PLAYER CONTROL AREA */
+
+.side .player-buttons {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    min-width: max-content;
+}
