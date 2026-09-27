@@ -10,20 +10,17 @@
 
 :root {
     --bg: #050505;
-    --surface: #0d0d0d;
-    --surface-2: #131313;
-    --surface-3: #191919;
-
+    --panel: #101010;
+    --panel-light: #171717;
     --border: rgba(255, 255, 255, 0.08);
 
-    --text: #ffffff;
-    --muted: #8f8f8f;
-    --muted-2: #666666;
+    --white: #ffffff;
+    --muted: #929292;
+    --muted-dark: #5f5f5f;
 
-    --accent: #1ed760;
+    --green: #1ed760;
 
-    --radius-lg: 22px;
-    --radius-md: 14px;
+    --radius: 18px;
 }
 
 
@@ -38,15 +35,8 @@ body {
 }
 
 body {
-    background:
-        radial-gradient(
-            circle at 75% 10%,
-            rgba(30, 215, 96, 0.08),
-            transparent 30%
-        ),
-        var(--bg);
-
-    color: var(--text);
+    background: #050505;
+    color: white;
 
     font-family:
         Inter,
@@ -96,93 +86,90 @@ main {
     display: flex;
     flex-direction: column;
 
-    gap: 12px;
+    gap: 10px;
 }
 
 
 /* =========================================================
-   HEADER
+   TOP NAVBAR
 ========================================================= */
 
 .top {
     width: 100%;
-    height: 76px;
+    height: 72px;
 
-    padding: 0 28px;
+    padding: 0 24px;
 
     display: flex;
     align-items: center;
     justify-content: space-between;
 
-    background: rgba(5, 5, 5, 0.92);
+    background: #050505;
 
     border-bottom: 1px solid var(--border);
 
     position: relative;
-    z-index: 10;
-
-    backdrop-filter: blur(20px);
+    z-index: 20;
 }
-
-
-/* LEFT HEADER */
 
 .first {
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 16px;
+
+    min-width: 0;
 }
 
 .top #logo {
     width: 38px;
     height: 38px;
+
+    flex-shrink: 0;
 }
 
 .top #home {
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
+
+    flex-shrink: 0;
 }
 
 
 /* SEARCH */
 
 .search-box {
-    height: 46px;
+    height: 44px;
 
     display: flex;
     align-items: center;
-    gap: 12px;
 
-    padding: 0 16px;
+    gap: 10px;
+
+    padding: 0 15px;
 
     background: #151515;
 
     border: 1px solid var(--border);
 
-    border-radius: 30px;
+    border-radius: 25px;
 
-    transition: 0.25s ease;
-}
-
-.search-box:hover {
-    border-color: rgba(255, 255, 255, 0.18);
+    transition: 0.2s ease;
 }
 
 .search-box:focus-within {
-    border-color: rgba(30, 215, 96, 0.55);
+    border-color: rgba(30, 215, 96, 0.5);
+
     box-shadow:
-        0 0 0 3px rgba(30, 215, 96, 0.08);
+        0 0 0 3px rgba(30, 215, 96, 0.07);
 }
 
 .top input {
-    width: 310px;
-
-    padding: 0;
-
-    background: transparent;
+    width: 280px;
 
     border: none;
     outline: none;
+
+    background: transparent;
 
     color: white;
 
@@ -194,33 +181,31 @@ main {
 }
 
 
-/* HEADER BUTTONS */
+/* TOP BUTTONS */
 
 .top > .buttons {
     display: flex;
     align-items: center;
+
     gap: 10px;
 
-    position: relative;
-    left: 0;
+    position: static;
 }
 
 .Signup,
 .login {
-    height: 42px;
+    height: 40px;
 
-    padding: 0 22px;
+    padding: 0 20px;
 
-    border-radius: 30px;
+    border-radius: 22px;
+
+    cursor: pointer;
 
     font-size: 13px;
     font-weight: 600;
 
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        background 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .Signup {
@@ -228,16 +213,15 @@ main {
 
     background: transparent;
 
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid #333;
 }
 
 .Signup:hover {
-    background: rgba(255, 255, 255, 0.06);
-    transform: translateY(-1px);
+    background: #181818;
 }
 
 .login {
-    color: #000;
+    color: black;
 
     background: white;
 
@@ -245,56 +229,48 @@ main {
 }
 
 .login:hover {
-    background: #e9e9e9;
-    transform: translateY(-1px);
+    background: #dedede;
 }
 
 
 /* =========================================================
-   MAIN CONTENT
+   MAIN CONTAINER
 ========================================================= */
 
 .cont {
     width: 100%;
 
-    min-height: calc(100vh - 88px);
+    height: calc(100vh - 82px);
 
     display: flex;
 
-    gap: 12px;
+    gap: 10px;
 
-    padding: 0 12px 12px;
+    padding: 0 10px 10px;
 }
 
 
 /* =========================================================
-   SIDEBAR
+   LEFT LIBRARY
 ========================================================= */
 
 .left {
-    width: 28%;
+    width: 280px;
 
-    min-width: 260px;
+    flex-shrink: 0;
 
-    height: calc(100vh - 88px);
+    height: 100%;
 
-    padding: 22px 16px;
+    padding: 20px 14px;
 
     display: flex;
     flex-direction: column;
 
-    background:
-        linear-gradient(
-            180deg,
-            #101010 0%,
-            #0a0a0a 100%
-        );
+    background: #101010;
 
     border: 1px solid var(--border);
 
-    border-radius: var(--radius-lg);
-
-    position: relative;
+    border-radius: var(--radius);
 }
 
 
@@ -302,20 +278,19 @@ main {
 
 .library-header {
     display: flex;
-
     align-items: center;
     justify-content: space-between;
 
-    padding: 4px 8px 18px;
+    padding: 4px 8px 16px;
 
     border-bottom: 1px solid var(--border);
 }
 
 .library-title {
+    color: white;
+
     font-size: 15px;
     font-weight: 700;
-
-    color: #fff;
 }
 
 .library-add {
@@ -328,20 +303,13 @@ main {
 
     border-radius: 50%;
 
-    background: #181818;
+    background: #1b1b1b;
 
     color: #aaa;
 
-    font-size: 22px;
+    font-size: 21px;
 
     cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.library-add:hover {
-    color: white;
-    background: #252525;
 }
 
 
@@ -352,52 +320,42 @@ main {
 
     overflow-y: auto;
 
-    padding: 14px 0;
-}
-
-.songlist ul {
-    padding: 0;
-    margin: 0;
+    padding-top: 10px;
 }
 
 .songlist ul li {
     list-style: none;
 
-    min-height: 58px;
+    min-height: 55px;
 
     display: flex;
     align-items: center;
-    justify-content: space-between;
 
     gap: 10px;
 
-    padding: 10px 11px;
+    padding: 9px 10px;
+
     margin: 5px 0;
-
-    color: #b5b5b5;
-
-    background: transparent;
 
     border: 1px solid transparent;
 
-    border-radius: 11px;
+    border-radius: 10px;
+
+    color: #aaa;
+
+    font-size: 12px;
 
     cursor: pointer;
 
-    font-size: 13px;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .songlist ul li:hover {
-    background: #181818;
-
-    border-color: var(--border);
+    background: #191919;
 
     color: white;
+
+    border-color: var(--border);
 }
 
 .songlist ul li img {
@@ -406,20 +364,20 @@ main {
 }
 
 
-/* INFO */
+/* SONG INFO */
 
-.songinfo {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    flex: 1;
-
-    justify-content: flex-start;
+.songlist .info {
+    min-width: 0;
 
     overflow: hidden;
+}
+
+.songlist .info div {
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
 }
 
 
@@ -430,54 +388,27 @@ main {
 
     align-items: center;
 
-    gap: 7px;
+    gap: 6px;
 
     margin-left: auto;
 
-    white-space: nowrap;
-
-    color: #aaa;
+    flex-shrink: 0;
 }
 
 .playnow span {
-    font-size: 11px;
+    font-size: 10px;
+
+    color: #777;
 }
 
 .playnow img {
-    width: 17px;
-    height: 17px;
-}
-
-
-/* SIDEBAR FOOTER */
-
-.sidebar-footer {
-    display: flex;
-
-    flex-wrap: wrap;
-
-    gap: 12px;
-
-    padding: 14px 8px 4px;
-
-    border-top: 1px solid var(--border);
-
-    color: #555;
-
-    font-size: 10px;
-}
-
-.sidebar-footer span {
-    cursor: pointer;
-}
-
-.sidebar-footer span:hover {
-    color: #aaa;
+    width: 16px;
+    height: 16px;
 }
 
 
 /* =========================================================
-   RIGHT CONTENT
+   RIGHT AREA
 ========================================================= */
 
 .right {
@@ -485,7 +416,7 @@ main {
 
     min-width: 0;
 
-    height: calc(100vh - 88px);
+    height: 100%;
 
     display: flex;
 
@@ -493,63 +424,56 @@ main {
 
     background:
         radial-gradient(
-            circle at 50% 0%,
+            circle at 70% 0%,
             rgba(30, 215, 96, 0.07),
-            transparent 32%
+            transparent 35%
         ),
         #080808;
 
     border: 1px solid var(--border);
 
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
 
     overflow: hidden;
-
-    position: relative;
 }
 
 
 /* =========================================================
-   CONTENT AREA
+   ALBUM AREA
 ========================================================= */
 
 .content-area {
     flex: 1;
 
+    min-height: 0;
+
     overflow-y: auto;
 
-    padding: 32px;
+    padding: 30px;
 }
 
-
-/* SECTION HEADING */
-
 .section-heading {
-    display: flex;
-
-    align-items: flex-end;
-    justify-content: space-between;
-
-    margin-bottom: 26px;
+    margin-bottom: 25px;
 }
 
 .eyebrow {
     margin-bottom: 8px;
 
-    color: var(--accent);
+    color: var(--green);
 
     font-size: 10px;
+
     font-weight: 700;
 
     letter-spacing: 2px;
 }
 
 .section-heading h1 {
-    font-size: clamp(28px, 3vw, 42px);
+    font-size: 36px;
 
     line-height: 1;
 
-    letter-spacing: -1.5px;
+    letter-spacing: -1px;
 }
 
 
@@ -563,56 +487,41 @@ main {
     display: grid;
 
     grid-template-columns:
-        repeat(auto-fill, minmax(210px, 1fr));
+        repeat(auto-fill, minmax(200px, 1fr));
 
     gap: 18px;
-
-    padding: 0;
 }
 
-
-/* CARD */
 
 .album-card {
     width: 100%;
 
-    padding: 14px;
+    padding: 13px;
 
-    background:
-        linear-gradient(
-            145deg,
-            #151515,
-            #0e0e0e
-        );
+    background: #121212;
 
     border: 1px solid var(--border);
 
-    border-radius: 17px;
-
-    color: white;
+    border-radius: 15px;
 
     cursor: pointer;
 
     transition:
-        transform 0.3s ease,
-        background 0.3s ease,
-        border 0.3s ease,
-        box-shadow 0.3s ease;
+        transform 0.25s ease,
+        background 0.25s ease,
+        border 0.25s ease;
 }
 
 .album-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
 
     background: #181818;
 
     border-color: rgba(30, 215, 96, 0.25);
-
-    box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.35);
 }
 
 
-/* IMAGE */
+/* ALBUM IMAGE */
 
 .album-image {
     width: 100%;
@@ -623,9 +532,9 @@ main {
 
     overflow: hidden;
 
-    border-radius: 13px;
+    border-radius: 11px;
 
-    margin-bottom: 15px;
+    margin-bottom: 13px;
 }
 
 .album-card img {
@@ -635,20 +544,14 @@ main {
     object-fit: cover;
 
     display: block;
-
-    transition: transform 0.45s ease;
-}
-
-.album-card:hover .album-image > img {
-    transform: scale(1.05);
 }
 
 
-/* PLAY BUTTON */
+/* ALBUM PLAY */
 
 .album-play {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
 
     display: flex;
     align-items: center;
@@ -656,27 +559,23 @@ main {
 
     position: absolute;
 
-    right: 12px;
-    bottom: 12px;
-
-    background: var(--accent);
+    right: 10px;
+    bottom: 10px;
 
     border-radius: 50%;
+
+    background: var(--green);
 
     opacity: 0;
 
     transform: translateY(8px);
 
-    transition:
-        opacity 0.25s ease,
-        transform 0.25s ease;
+    transition: 0.2s ease;
 }
 
 .album-play img {
-    width: 20px;
-    height: 20px;
-
-    object-fit: contain;
+    width: 19px;
+    height: 19px;
 
     filter: brightness(0);
 }
@@ -688,24 +587,22 @@ main {
 }
 
 
-/* CARD TEXT */
+/* TEXT */
 
 .album-card h2 {
-    margin: 0 0 6px;
+    margin-bottom: 6px;
 
-    font-size: 17px;
+    font-size: 16px;
 
     font-weight: 650;
 }
 
 .album-card h4 {
-    margin: 0;
+    color: #858585;
 
-    color: #888;
+    font-size: 11px;
 
-    font-size: 12px;
-
-    line-height: 1.6;
+    line-height: 1.55;
 
     font-weight: 400;
 }
@@ -718,37 +615,32 @@ main {
 .side {
     width: 100%;
 
-    min-height: 230px;
+    flex-shrink: 0;
 
-    padding: 18px 30px 24px;
+    padding: 18px 30px 22px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #141414,
+            #0c0c0c
+        );
+
+    border-top: 1px solid var(--border);
 
     display: flex;
 
     flex-direction: column;
 
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            180deg,
-            #111,
-            #090909
-        );
-
-    border-top: 1px solid var(--border);
-
-    position: relative;
-
-    gap: 12px;
+    gap: 14px;
 }
 
 
 /* PLAYER LABEL */
 
 .player-top {
-    width: 100%;
-
     display: flex;
+
     justify-content: center;
 }
 
@@ -757,9 +649,9 @@ main {
 
     font-size: 9px;
 
-    letter-spacing: 2px;
-
     font-weight: 700;
+
+    letter-spacing: 2px;
 }
 
 
@@ -768,15 +660,18 @@ main {
 .player-content {
     width: 100%;
 
-    max-width: 850px;
+    display: grid;
 
-    margin: 0 auto;
-
-    display: flex;
+    grid-template-columns:
+        58px
+        minmax(130px, 190px)
+        minmax(120px, 1fr)
+        auto
+        100px;
 
     align-items: center;
 
-    gap: 22px;
+    gap: 20px;
 }
 
 
@@ -784,55 +679,30 @@ main {
    DISC
 ========================================================= */
 
-.player-art {
-    flex-shrink: 0;
-}
-
 #disc {
-    width: 58px;
-    height: 58px;
+    width: 56px;
+    height: 56px;
 
     border-radius: 50%;
 
     background:
         radial-gradient(
             circle,
-            #050505 0 18%,
-            #777 19% 21%,
-            #151515 22% 35%,
-            #555 36% 38%,
-            #111 39% 100%
+            #ddd 0 7%,
+            #090909 8% 16%,
+            #555 17% 19%,
+            #111 20% 36%,
+            #666 37% 39%,
+            #111 40% 100%
         );
 
-    border: 2px solid #222;
+    border: 2px solid #252525;
 
     box-shadow:
-        0 0 0 5px #111,
-        0 8px 25px rgba(0, 0, 0, 0.5);
-
-    transition: transform 0.2s linear;
-
-    position: relative;
+        0 0 0 4px #0a0a0a,
+        0 8px 20px rgba(0, 0, 0, 0.5);
 
     pointer-events: none;
-}
-
-#disc::after {
-    content: "";
-
-    width: 8px;
-    height: 8px;
-
-    position: absolute;
-
-    top: 50%;
-    left: 50%;
-
-    transform: translate(-50%, -50%);
-
-    border-radius: 50%;
-
-    background: #ddd;
 }
 
 .rotate {
@@ -840,7 +710,6 @@ main {
 }
 
 @keyframes spin {
-
     from {
         transform: rotate(0deg);
     }
@@ -848,28 +717,23 @@ main {
     to {
         transform: rotate(360deg);
     }
-
 }
 
 
 /* =========================================================
-   SONG INFORMATION
+   SONG INFO
 ========================================================= */
 
 .infos {
-    min-width: 170px;
-
-    max-width: 230px;
+    min-width: 0;
 
     display: flex;
 
     flex-direction: column;
 
-    align-items: flex-start;
+    gap: 5px;
 
     justify-content: center;
-
-    gap: 5px;
 }
 
 .infos .songinfo {
@@ -890,20 +754,12 @@ main {
     position: static;
 }
 
-.infos .songinfo:hover {
-    color: var(--accent);
-
-    cursor: pointer;
-}
-
 .songtime {
     position: static;
 
     color: #666;
 
     font-size: 11px;
-
-    white-space: nowrap;
 }
 
 
@@ -912,23 +768,17 @@ main {
 ========================================================= */
 
 .seekbar {
-    flex: 1;
+    width: 100%;
 
-    height: 4px;
+    height: 5px;
 
     background: #333;
 
-    border-radius: 20px;
+    border-radius: 10px;
 
     position: relative;
 
     cursor: pointer;
-
-    margin: 0 5px;
-}
-
-.seekbar:hover {
-    background: #444;
 }
 
 .circle {
@@ -941,45 +791,35 @@ main {
 
     position: absolute;
 
+    left: 0;
     top: 50%;
-    left: 0%;
 
     transform: translateY(-50%);
 
     cursor: pointer;
-
-    box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.4);
-
-    transition:
-        transform 0.1s ease;
-}
-
-.seekbar:hover .circle {
-    transform:
-        translateY(-50%)
-        scale(1.15);
 }
 
 
 /* =========================================================
-   PLAYER BUTTONS
+   CONTROLS
 ========================================================= */
 
-.side > .player-content > .buttons {
+.side .buttons {
     display: flex;
 
     align-items: center;
 
     justify-content: center;
 
-    gap: 8px;
+    gap: 6px;
 
     position: static;
 
     width: auto;
 
     height: auto;
+
+    left: auto;
 }
 
 .side .buttons > div {
@@ -993,39 +833,30 @@ main {
 
     border-radius: 50%;
 
-    background: transparent;
-
     border: 1px solid transparent;
 
     cursor: pointer;
 
-    transition:
-        background 0.2s ease,
-        transform 0.2s ease,
-        border 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .side .buttons > div:hover {
-    background: #1d1d1d;
+    background: #202020;
 
-    border-color: var(--border);
-
-    transform: translateY(-1px);
+    border-color: #292929;
 }
 
 .side .buttons > div img {
-    width: 16px;
-    height: 16px;
-
-    object-fit: contain;
+    width: 15px;
+    height: 15px;
 }
 
 
-/* MAIN PLAY BUTTON */
+/* PLAY */
 
 .side .buttons .play {
-    width: 48px;
-    height: 48px;
+    width: 46px;
+    height: 46px;
 
     background: white;
 
@@ -1033,14 +864,14 @@ main {
 }
 
 .side .buttons .play:hover {
-    background: #e9e9e9;
+    background: #ddd;
 
     transform: scale(1.05);
 }
 
 .side .buttons .play img {
-    width: 19px;
-    height: 19px;
+    width: 18px;
+    height: 18px;
 
     filter: invert(1);
 }
@@ -1055,11 +886,9 @@ main {
 
     align-items: center;
 
-    gap: 8px;
+    gap: 7px;
 
     position: static;
-
-    min-width: 100px;
 }
 
 #voulme span {
@@ -1067,109 +896,221 @@ main {
 
     font-size: 8px;
 
+    font-weight: 700;
+
     letter-spacing: 1px;
 }
 
 #voulme input {
-    width: 85px;
-
-    height: 4px;
-
-    accent-color: white;
+    width: 80px;
 
     cursor: pointer;
+
+    accent-color: white;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   TABLET
 ========================================================= */
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
 
     .left {
-        width: 32%;
-        min-width: 230px;
+        width: 235px;
+    }
+
+    .content-area {
+        padding: 24px;
     }
 
     .player-content {
-        gap: 14px;
-    }
+        grid-template-columns:
+            50px
+            140px
+            minmax(80px, 1fr)
+            auto
+            80px;
 
-    .infos {
-        min-width: 130px;
-    }
-
-    #voulme {
-        min-width: 80px;
+        gap: 12px;
     }
 
     #voulme input {
-        width: 60px;
+        width: 55px;
     }
 
 }
 
 
-@media (max-width: 760px) {
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .top {
+        padding: 0 16px;
+    }
+
+    .top input {
+        width: 200px;
+    }
+
+    .left {
+        width: 210px;
+    }
+
+    .content-area {
+        padding: 20px;
+    }
+
+    .section-heading h1 {
+        font-size: 30px;
+    }
+
+    .player-content {
+        grid-template-columns:
+            50px
+            130px
+            1fr
+            auto;
+    }
+
+    #voulme {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    /* HEADER */
 
     .top {
         height: auto;
 
-        padding: 14px 16px;
+        min-height: 65px;
 
-        gap: 12px;
+        padding: 10px 14px;
+
+        gap: 10px;
 
         flex-wrap: wrap;
     }
 
     .first {
         width: 100%;
+
+        gap: 10px;
+    }
+
+    .top #logo {
+        width: 34px;
+        height: 34px;
     }
 
     .search-box {
         flex: 1;
+
+        min-width: 0;
+
+        height: 40px;
     }
 
     .top input {
         width: 100%;
+
+        font-size: 12px;
     }
 
     .top > .buttons {
         display: none;
     }
 
+
+    /* MAIN */
+
     .cont {
+        height: auto;
+
+        min-height: calc(100vh - 75px);
+
         flex-direction: column;
 
-        padding: 0 8px 8px;
+        padding: 0 7px 7px;
     }
+
+
+    /* LIBRARY */
 
     .left {
         width: 100%;
 
-        min-width: 0;
+        height: 180px;
 
-        height: 220px;
+        min-height: 180px;
 
-        border-radius: 16px;
+        border-radius: 14px;
+
+        padding: 14px 12px;
+    }
+
+    .library-header {
+        padding-bottom: 10px;
+    }
+
+    .songlist {
+        padding-top: 5px;
+    }
+
+    .songlist ul li {
+        min-height: 45px;
+
+        padding: 7px 8px;
+
+        font-size: 11px;
     }
 
     .sidebar-footer {
         display: none;
     }
 
+
+    /* RIGHT */
+
     .right {
         width: 100%;
 
         height: auto;
 
-        min-height: calc(100vh - 310px);
+        min-height: 650px;
+
+        border-radius: 14px;
+
+        overflow: visible;
     }
 
     .content-area {
-        padding: 22px 18px;
+        padding: 22px 15px;
+
+        overflow: visible;
     }
+
+    .section-heading {
+        margin-bottom: 18px;
+    }
+
+    .section-heading h1 {
+        font-size: 27px;
+    }
+
+
+    /* ALBUMS */
 
     .cards {
         grid-template-columns:
@@ -1179,72 +1120,192 @@ main {
     }
 
     .album-card {
-        padding: 10px;
+        padding: 9px;
+
+        border-radius: 12px;
     }
 
     .album-card h2 {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .album-card h4 {
-        font-size: 10px;
+        font-size: 9px;
     }
 
-    .side {
-        padding: 18px;
+    .album-play {
+        width: 38px;
+        height: 38px;
 
-        min-height: 190px;
+        right: 7px;
+        bottom: 7px;
+
+        opacity: 1;
+
+        transform: none;
+    }
+
+    .album-play img {
+        width: 16px;
+        height: 16px;
+    }
+
+
+    /* PLAYER */
+
+    .side {
+        padding: 20px 15px 24px;
+
+        gap: 14px;
     }
 
     .player-content {
-        flex-wrap: wrap;
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 13px;
+    }
+
+    #disc {
+        width: 62px;
+        height: 62px;
+    }
+
+    .infos {
+        width: 100%;
+
+        max-width: 280px;
+
+        align-items: center;
+
+        text-align: center;
+    }
+
+    .infos .songinfo {
+        text-align: center;
+    }
+
+    .songtime {
+        text-align: center;
+    }
+
+
+    /* SEEK */
+
+    .seekbar {
+        width: 100%;
+
+        height: 5px;
+
+        margin: 3px 0;
+    }
+
+
+    /* CONTROLS */
+
+    .side .buttons {
+        width: 100%;
+
+        gap: 9px;
+    }
+
+    .side .buttons > div {
+        width: 42px;
+        height: 42px;
+    }
+
+    .side .buttons .play {
+        width: 52px;
+        height: 52px;
+    }
+
+    .side .buttons > div img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .side .buttons .play img {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    /* VOLUME */
+
+    #voulme {
+        display: flex;
+
+        width: 100%;
 
         justify-content: center;
     }
 
-    .infos {
-        min-width: 120px;
-    }
-
-    .seekbar {
-        order: 10;
-
-        flex-basis: 100%;
-    }
-
-    #voulme {
-        order: 9;
+    #voulme input {
+        width: 130px;
     }
 
 }
 
 
-@media (max-width: 480px) {
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
 
     .cards {
         grid-template-columns: 1fr;
     }
 
-    .section-heading h1 {
-        font-size: 28px;
+    .album-card {
+        display: grid;
+
+        grid-template-columns: 90px 1fr;
+
+        gap: 12px;
+
+        align-items: center;
     }
 
-    .player-art {
-        display: none;
+    .album-image {
+        width: 90px;
+
+        margin: 0;
     }
 
-    .infos {
-        max-width: 140px;
+    .album-card h2,
+    .album-card h4 {
+        grid-column: 2;
     }
 
-    .side .buttons > div {
+    .album-card h2 {
+        margin-top: -55px;
+    }
+
+    .album-card h4 {
+        margin-top: -20px;
+    }
+
+    .album-play {
         width: 34px;
         height: 34px;
     }
 
+    .side .buttons {
+        gap: 5px;
+    }
+
+    .side .buttons > div {
+        width: 38px;
+        height: 38px;
+    }
+
     .side .buttons .play {
-        width: 44px;
-        height: 44px;
+        width: 48px;
+        height: 48px;
     }
 
 }
