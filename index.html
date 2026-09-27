@@ -7,8 +7,8 @@
 
     <title>Spotify Clone - Faizan Saqib</title>
 
+    <!-- ONLY ONE CSS FILE -->
     <link rel="stylesheet" href="Style.css">
-    <link rel="stylesheet" href="Utility.css">
 </head>
 
 <body>
@@ -16,6 +16,7 @@
     <main>
 
         <!-- ================= HEADER ================= -->
+
         <header class="top">
 
             <div class="first">
@@ -45,6 +46,7 @@
 
             </div>
 
+
             <div class="buttons">
 
                 <button class="Signup">
@@ -61,20 +63,25 @@
 
 
         <!-- ================= MAIN CONTENT ================= -->
+
         <div class="cont">
 
-            <!-- ================= SIDEBAR ================= -->
+            <!-- ================= LIBRARY ================= -->
+
             <aside class="left">
 
                 <div class="library-header">
 
-                    <div>
-                        <span class="library-title">Your Library</span>
-                    </div>
+                    <span class="library-title">
+                        Your Library
+                    </span>
 
-                    <span class="library-add">+</span>
+                    <span class="library-add">
+                        +
+                    </span>
 
                 </div>
+
 
                 <div class="songlist">
 
@@ -82,6 +89,7 @@
                     </ul>
 
                 </div>
+
 
                 <div class="sidebar-footer">
 
@@ -94,23 +102,33 @@
             </aside>
 
 
-            <!-- ================= CONTENT ================= -->
+            <!-- ================= RIGHT SIDE ================= -->
+
             <section class="right">
+
+                <!-- ================= MUSIC CONTENT ================= -->
 
                 <div class="content-area">
 
                     <div class="section-heading">
 
-                        <div>
-                            <p class="eyebrow">DISCOVER</p>
-                            <h1>Made for you</h1>
-                        </div>
+                        <p class="eyebrow">
+                            DISCOVER
+                        </p>
+
+                        <h1>
+                            Made for you
+                        </h1>
 
                     </div>
 
 
-                    <!-- ================= ALBUMS ================= -->
+                    <!-- ================= ALBUM CARDS ================= -->
+
                     <div class="cards">
+
+
+                        <!-- CHILL & SOUL -->
 
                         <div
                             data-folder="cs"
@@ -121,28 +139,39 @@
 
                                 <img
                                     src="soft.webp"
-                                    alt="Soft music"
+                                    alt="Chill and Soul"
                                 >
 
                                 <div class="album-play">
+
                                     <img
                                         src="play.svg"
-                                        alt="Play"
                                         class="invert"
+                                        alt="Play"
                                     >
+
                                 </div>
 
                             </div>
 
-                            <h2>Chill & Soul</h2>
 
-                            <h4>
-                                Relaxing and soulful tracks for
-                                studying, working and unwinding.
-                            </h4>
+                            <div class="album-content">
+
+                                <h2>
+                                    Chill & Soul
+                                </h2>
+
+                                <h4>
+                                    Relaxing and soulful tracks for
+                                    studying, working and unwinding.
+                                </h4>
+
+                            </div>
 
                         </div>
 
+
+                        <!-- NCS -->
 
                         <div
                             data-folder="ncs"
@@ -153,25 +182,34 @@
 
                                 <img
                                     src="hard.jpg"
-                                    alt="Hard music"
+                                    alt="NCS"
                                 >
 
                                 <div class="album-play">
+
                                     <img
                                         src="play.svg"
-                                        alt="Play"
                                         class="invert"
+                                        alt="Play"
                                     >
+
                                 </div>
 
                             </div>
 
-                            <h2>Hard</h2>
 
-                            <h4>
-                                Energetic instrumental music for
-                                intense moments and creative work.
-                            </h4>
+                            <div class="album-content">
+
+                                <h2>
+                                    NCS
+                                </h2>
+
+                                <h4>
+                                    Energetic tracks for every
+                                    moment and creative work.
+                                </h4>
+
+                            </div>
 
                         </div>
 
@@ -180,27 +218,28 @@
                 </div>
 
 
-                <!-- ================= PLAYER ================= -->
+                <!-- ================= MUSIC PLAYER ================= -->
+
                 <div class="side">
 
-                    <div class="player-top">
-
-                        <div class="now-playing-label">
-                            NOW PLAYING
-                        </div>
-
+                    <div class="now-playing-label">
+                        NOW PLAYING
                     </div>
 
 
                     <div class="player-content">
 
+
+                        <!-- DISC -->
+
                         <div class="player-art">
 
-                            <div id="disc">
-                            </div>
+                            <div id="disc"></div>
 
                         </div>
 
+
+                        <!-- SONG INFO -->
 
                         <div class="infos">
 
@@ -214,26 +253,34 @@
 
 
                         <!-- SEEK BAR -->
-                        <div class="seekbar">
 
-                            <div class="circle">
+                        <div class="seek-container">
+
+                            <div class="seekbar">
+
+                                <div class="circle"></div>
+
                             </div>
 
                         </div>
 
 
                         <!-- CONTROLS -->
-                        <div class="buttons">
+
+                        <div class="buttons player-buttons">
+
 
                             <div
                                 id="previous"
                                 class="previous"
                             >
+
                                 <img
                                     class="invert"
                                     src="previous.svg"
                                     alt="Previous"
                                 >
+
                             </div>
 
 
@@ -242,7 +289,7 @@
                                 <img
                                     class="invert"
                                     src="minus5sec.svg"
-                                    alt="Minus 5 Seconds"
+                                    alt="Back 5 seconds"
                                 >
 
                             </div>
@@ -252,11 +299,13 @@
                                 id="play"
                                 class="play"
                             >
+
                                 <img
                                     class="invert"
                                     src="play.svg"
                                     alt="Play"
                                 >
+
                             </div>
 
 
@@ -265,7 +314,7 @@
                                 <img
                                     class="invert"
                                     src="plus5sec.svg"
-                                    alt="Plus 5 Seconds"
+                                    alt="Forward 5 seconds"
                                 >
 
                             </div>
@@ -275,20 +324,26 @@
                                 id="next"
                                 class="next"
                             >
+
                                 <img
                                     class="invert"
                                     src="next.svg"
                                     alt="Next"
                                 >
+
                             </div>
+
 
                         </div>
 
 
                         <!-- VOLUME -->
+
                         <div id="voulme">
 
-                            <span>VOL</span>
+                            <span>
+                                VOL
+                            </span>
 
                             <input
                                 type="range"
@@ -309,8 +364,11 @@
 
     </main>
 
-</body>
 
-<script src="Script.js"></script>
+    <!-- JAVASCRIPT — DO NOT CHANGE -->
+
+    <script src="Script.js"></script>
+
+</body>
 
 </html>
