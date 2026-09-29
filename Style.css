@@ -12,7 +12,7 @@
 
 html, body { height: 100%; }
 body {
-  background: #0a3a2a
+  background: #1ed760;
   background-attachment: fixed;
   color: var(--text);
   font-family: 'Inter', sans-serif;
