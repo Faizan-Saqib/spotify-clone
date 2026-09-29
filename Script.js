@@ -203,8 +203,16 @@ function setupAudioEvents() {
 function setupVolume() {
     const volInput = document.querySelector("#volume input");
     if (!volInput) return;
+
+    // Set initial background fill (assuming starts at 100%)
+    volInput.style.background = `linear-gradient(to right, var(--green) 100%, #333 100%)`;
+
     volInput.addEventListener("input", e => {
-        currentSong.volume = e.target.value / 100;
+        const percent = e.target.value;
+        currentSong.volume = percent / 100;
+        
+        // Dynamically fill the bar matching the exact volume level
+        volInput.style.background = `linear-gradient(to right, var(--green) ${percent}%, #333 ${percent}%)`;
     });
 }
 
