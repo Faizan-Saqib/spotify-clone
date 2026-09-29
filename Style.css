@@ -107,7 +107,7 @@ main { height: 100vh; height: 100dvh; display: flex; flex-direction: column; }
 /* RIGHT */
 .right {
   flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden;
-  background: radial-gradient(ellipse at 80% 35%, rgba(20, 130, 70, .45), transparent 55%), var(--panel);
+  background: #000000;
   border: 1px solid var(--line); border-radius: 16px;
 }
 .content-area { flex: 1; overflow-y: auto; padding: 26px 32px; }
