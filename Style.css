@@ -406,14 +406,51 @@ main {
 .play img { width: 20px; height: 20px; filter: brightness(0); } 
 
 /* Volume */
+/* =========================================================
+   VOLUME
+========================================================= */
 #volume {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     width: 120px;
 }
-#volume span { font-size: 10px; font-weight: 800; color: #888; }
-#volume input { width: 100%; accent-color: var(--green); cursor: pointer; }
+
+#volume span { 
+    font-size: 11px; 
+    font-weight: 800; 
+    color: #a0a0a0; 
+    letter-spacing: 0.5px;
+}
+
+#volume input { 
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%; 
+    height: 6px; /* Thick bar matching the screenshot */
+    border-radius: 4px;
+    background: var(--green); /* Will be dynamically updated by JS */
+    cursor: pointer;
+    outline: none;
+}
+
+/* Hide the default dragging knob, but keep it functionally clickable */
+#volume input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    cursor: pointer;
+}
+
+#volume input::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
 
 /* =========================================================
    RESPONSIVE (1100px, 850px, 650px)
