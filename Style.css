@@ -11,11 +11,11 @@
     --bg-dark: #000000;
     --panel-left: #121212;
     --panel-right: #121212;
-    /* Authentic Spotify Green */
-    --green: #1ed760; 
-    --green-glow: rgba(30, 215, 96, 0.2);
+    --green: #1ed760; /* Premium Spotify Green */
+    --green-glow: rgba(30, 215, 96, 0.15); /* Subtler, cleaner glow */
     --text-main: #ffffff;
     --text-sub: #a0a0a0;
+    --border-light: rgba(255, 255, 255, 0.06);
 }
 
 html, body {
@@ -56,9 +56,9 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: radial-gradient(circle at 50% -50%, rgba(30, 215, 96, 0.15), transparent 60%), #070a09;
+    background: var(--panel-right);
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
 }
 
 .first { display: flex; align-items: center; gap: 24px; }
@@ -72,15 +72,15 @@ main {
     align-items: center;
     gap: 12px;
     padding: 0 16px;
-    background: #1a1d1d;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #1a1a1a;
+    border: 1px solid transparent;
     border-radius: 24px;
     transition: 0.3s ease;
 }
 
 .search-box:focus-within {
     border-color: var(--green);
-    box-shadow: 0 0 12px var(--green-glow);
+    background: #222;
 }
 
 .search-box input {
@@ -107,19 +107,11 @@ main {
     transition: 0.2s ease;
 }
 
-.Signup {
-    background: transparent;
-    color: var(--text-sub);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.Signup:hover { color: white; border-color: white; }
+.Signup { background: transparent; color: var(--text-sub); border: none; }
+.Signup:hover { color: white; transform: scale(1.05); }
 
-.login {
-    background: var(--green);
-    color: #000;
-    border: none;
-}
-.login:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--green-glow); }
+.login { background: var(--green); color: #000; border: none; }
+.login:hover { transform: scale(1.05); }
 
 /* =========================================================
    MAIN PANELS
@@ -127,7 +119,7 @@ main {
 .cont {
     flex: 1;
     display: flex;
-    gap: 12px;
+    gap: 8px;
     min-height: 0;
 }
 
@@ -139,9 +131,9 @@ main {
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    padding: 24px 20px 16px;
+    padding: 24px 16px 16px;
     background: var(--panel-left);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
 }
 
@@ -149,29 +141,16 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 24px;
+    padding: 0 8px 24px 8px;
 }
 
-.library-title {
-    color: var(--text-sub);
-    font-size: 16px;
-    font-weight: 700;
-}
-.library-title:hover { color: white; cursor: pointer; }
-
-.library-add {
-    color: var(--text-sub);
-    font-size: 24px;
-    cursor: pointer;
-    transition: 0.2s;
-}
+.library-title { color: var(--green); font-size: 16px; font-weight: 700; }
+.library-add { color: var(--text-sub); font-size: 24px; cursor: pointer; transition: 0.2s; }
 .library-add:hover { color: white; }
 
 /* SONG LIST */
-.songlist { flex: 1; overflow-y: auto; }
-
+.songlist { flex: 1; overflow-y: auto; padding-right: 4px; }
 .songlist ul { list-style: none; }
-
 .songlist ul li {
     display: flex;
     align-items: center;
@@ -181,24 +160,26 @@ main {
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s ease;
+    gap: 12px;
 }
-
 .songlist ul li:hover { background: rgba(255, 255, 255, 0.05); }
 
 .song-left {
     display: flex;
     align-items: center;
     gap: 12px;
-    overflow: hidden;
+    flex: 1; 
+    min-width: 0; /* CRITICAL: Prevents long text from breaking layout */
 }
 
-.song-left img { width: 18px; height: 18px; opacity: 0.7; }
+.song-left img { width: 18px; height: 18px; opacity: 0.5; flex-shrink: 0; }
 .song-left .info {
     font-size: 14px;
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0; /* CRITICAL for truncation */
 }
 
 .playnow {
@@ -206,28 +187,29 @@ main {
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: var(--text-main);
-    opacity: 0.8;
+    color: var(--text-sub);
+    flex-shrink: 0;
 }
-.playnow img { width: 14px; height: 14px; }
+.playnow img { width: 14px; height: 14px; opacity: 0.8; }
+.songlist ul li:hover .playnow { color: var(--green); }
 
 .sidebar-footer {
     display: flex;
     gap: 16px;
-    padding-top: 20px;
+    padding: 20px 8px 0;
     font-size: 11px;
     color: #666;
 }
 
 /* =========================================================
-   RIGHT: CONTENT & PLAYER
+   RIGHT: CONTENT
 ========================================================= */
 .right {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: radial-gradient(circle at top right, rgba(30, 215, 96, 0.15), transparent 40%), var(--panel-right);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: radial-gradient(circle at top left, rgba(30, 215, 96, 0.1), transparent 50%), var(--panel-right);
+    border: 1px solid var(--border-light);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -238,9 +220,8 @@ main {
     padding: 40px;
 }
 
-/* BIG TYPOGRAPHY */
 .eyebrow {
-    color: var(--text-main);
+    color: var(--green);
     font-size: 12px;
     font-weight: 800;
     letter-spacing: 2px;
@@ -249,64 +230,58 @@ main {
 
 .section-heading h1 {
     color: var(--green);
-    font-size: clamp(40px, 6vw, 85px);
+    font-size: clamp(40px, 5vw, 72px); /* Toned down slightly for clarity */
     font-weight: 900;
     letter-spacing: -2px;
     line-height: 1.1;
-    text-shadow: 0 0 40px var(--green-glow);
+    text-shadow: 0 0 30px var(--green-glow);
 }
 
 .section-subtitle {
     margin-top: 12px;
     color: var(--text-sub);
-    font-size: 16px;
+    font-size: 15px;
     margin-bottom: 40px;
 }
 
-/* CARDS EXACT MATCH */
+/* CARDS */
 .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 20px;
 }
 
 .album-card {
     padding: 24px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
     cursor: pointer;
     transition: 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .album-card:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(30, 215, 96, 0.4);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
     transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.album-card h2 {
-    color: var(--green);
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 12px;
-}
-
-.album-card h4 {
-    color: var(--text-sub);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-}
+.card-tag { font-size: 12px; font-weight: 700; color: var(--green); letter-spacing: 1px; }
+.album-card h2 { color: var(--text-main); font-size: 22px; font-weight: 800; }
+.album-card h4 { color: var(--text-sub); font-size: 14px; font-weight: 400; line-height: 1.5; }
 
 /* =========================================================
    PLAYER BOTTOM PANEL
 ========================================================= */
 .side {
     width: 100%;
-    padding: 20px 40px;
-    background: linear-gradient(to top, #090b0b, transparent);
-    border-top: 1px solid rgba(255,255,255,0.03);
+    padding: 16px 32px;
+    background: #000000;
+    border-top: 1px solid var(--border-light);
 }
 
 .now-playing-label {
@@ -315,40 +290,43 @@ main {
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 3px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 .player-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 20px;
+    gap: 24px; /* Even spacing across the bar */
 }
 
 /* Disc */
 #disc {
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
     border-radius: 50%;
     background: radial-gradient(circle, var(--green) 0 10%, #103e35 11% 20%, #111 21% 100%);
-    border: 2px solid #202727;
-    box-shadow: 0 0 20px var(--green-glow);
+    border: 2px solid #222;
 }
 .rotate { animation: spin 4s linear infinite; }
 @keyframes spin { 100% { transform: rotate(360deg); } }
 
 /* Track Info */
 .infos {
-    width: 200px;
+    width: 180px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
-.songinfo { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.songinfo { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .songtime { font-size: 12px; color: var(--text-sub); }
 
-/* Seekbar */
-.seek-container { flex: 1; padding: 0 20px; }
+/* Seekbar - Now dynamically stretches */
+.seek-container { 
+    flex: 1; /* Takes up all available middle space */
+    padding: 0 16px; 
+}
 .seekbar {
     height: 6px;
     background: #333;
@@ -368,99 +346,72 @@ main {
 }
 
 /* Controls */
-.player-buttons { display: flex; align-items: center; gap: 12px; }
+.player-buttons { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    flex-shrink: 0;
+}
 
 .control-btn, .skip-btn {
     width: 40px;
     height: 40px;
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
-    border: none;
     background: transparent;
     color: var(--text-sub);
     cursor: pointer;
     transition: 0.2s ease;
 }
-.skip-btn { width: auto; padding: 0 12px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-.control-btn:hover, .skip-btn:hover { color: #fff; transform: scale(1.05); }
-.control-btn img { width: 18px; }
+.skip-btn { width: auto; padding: 0 12px; border-radius: 20px; font-size: 13px; font-weight: 600; background: #1a1a1a;}
+.control-btn:hover, .skip-btn:hover { color: #fff; transform: scale(1.05); background: #222; }
+.control-btn img { width: 16px; }
 
-/* The Glowing Play Button */
+/* Main Play Button */
 .play {
     width: 48px;
     height: 48px;
-    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--green);
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 15px var(--green-glow);
     transition: 0.2s ease;
 }
-.play:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(30, 215, 96, 0.4); }
-.play img { width: 20px; height: 20px; filter: brightness(0); } 
+.play:hover { transform: scale(1.05); box-shadow: 0 0 20px var(--green-glow); }
+.play img { width: 18px; height: 18px; filter: brightness(0); } 
 
 /* Volume */
-/* =========================================================
-   VOLUME
-========================================================= */
 #volume {
     display: flex;
     align-items: center;
     gap: 10px;
     width: 120px;
+    flex-shrink: 0;
 }
-
-#volume span { 
-    font-size: 11px; 
-    font-weight: 800; 
-    color: #a0a0a0; 
-    letter-spacing: 0.5px;
-}
-
+#volume span { font-size: 10px; font-weight: 800; color: #888; }
 #volume input { 
     -webkit-appearance: none;
     appearance: none;
     width: 100%; 
-    height: 6px; /* Thick bar matching the screenshot */
+    height: 6px; 
     border-radius: 4px;
-    background: var(--green); /* Will be dynamically updated by JS */
+    background: var(--green);
     cursor: pointer;
     outline: none;
 }
-
-/* Hide the default dragging knob, but keep it functionally clickable */
-#volume input::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background: transparent;
-    cursor: pointer;
-}
-
-#volume input::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-}
+#volume input::-webkit-slider-thumb { -webkit-appearance: none; width: 0; height: 0; }
 
 /* =========================================================
-   RESPONSIVE (1100px, 850px, 650px)
+   RESPONSIVE
 ========================================================= */
 @media (max-width: 1100px) {
     .left { width: 280px; }
     .search-box { width: 280px; }
-    .section-heading h1 { font-size: clamp(32px, 5vw, 60px); }
 }
-
 @media (max-width: 850px) {
     main { flex-direction: column; }
     .cont { flex-direction: column; overflow-y: auto; }
@@ -469,1759 +420,4 @@ main {
     .player-content { flex-wrap: wrap; justify-content: center; }
     .seek-container { min-width: 100%; order: -1; padding: 0; margin-bottom: 12px; }
     #volume { display: none; }
-}
-
-@media (max-width: 650px) {
-    .top { padding: 12px; height: auto; flex-direction: column; gap: 16px; }
-    .first { width: 100%; justify-content: space-between; gap: 12px; }
-    .search-box { flex: 1; width: auto; }
-    .buttons { display: none; }
-    .content-area { padding: 24px; }
-    .player-buttons { gap: 8px; }
-}/* =========================================================
-   RESET & VARIABLES
-========================================================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-:root {
-    --bg-dark: #050505;
-    --panel-left: #101515;
-    --panel-right: #090d0d;
-    --green: #00e5a0;
-    --green-glow: rgba(0, 229, 160, 0.3);
-    --text-main: #ffffff;
-    --text-sub: #a0a0a0;
-}
-
-html, body {
-    width: 100%;
-    min-height: 100%;
-    background: var(--bg-dark);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif; /* High-fidelity font */
-    overflow-x: hidden;
-}
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-
-/* =========================================================
-   LAYOUT
-========================================================= */
-main {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 12px;
-}
-
-/* =========================================================
-   HEADER
-========================================================= */
-.top {
-    width: 100%;
-    height: 72px;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: radial-gradient(circle at 50% -50%, rgba(0, 229, 160, 0.15), transparent 60%), #070a09;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.first { display: flex; align-items: center; gap: 24px; }
-
-#logo { width: 44px; height: 44px; border-radius: 50%; }
-
-.search-box {
-    width: 400px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0 16px;
-    background: #1a1d1d;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 24px;
-    transition: 0.3s ease;
-}
-
-.search-box:focus-within {
-    border-color: var(--green);
-    box-shadow: 0 0 12px var(--green-glow);
-}
-
-.search-box input {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    color: white;
-    font-size: 14px;
-    font-family: inherit;
-}
-
-.buttons { display: flex; align-items: center; gap: 16px; }
-
-.Signup, .login {
-    height: 44px;
-    padding: 0 24px;
-    border-radius: 22px;
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    transition: 0.2s ease;
-}
-
-.Signup {
-    background: transparent;
-    color: var(--text-sub);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-.Signup:hover { color: white; border-color: white; }
-
-.login {
-    background: var(--green);
-    color: #000;
-    border: none;
-}
-.login:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--green-glow); }
-
-/* =========================================================
-   MAIN PANELS
-========================================================= */
-.cont {
-    flex: 1;
-    display: flex;
-    gap: 12px;
-    min-height: 0;
-}
-
-/* =========================================================
-   LEFT: LIBRARY
-========================================================= */
-.left {
-    width: 340px;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    padding: 24px 20px 16px;
-    background: var(--panel-left);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-}
-
-.library-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-bottom: 24px;
-}
-
-.library-title {
-    color: var(--green);
-    font-size: 16px;
-    font-weight: 800;
-}
-
-.library-add {
-    color: var(--green);
-    font-size: 24px;
-    cursor: pointer;
-}
-
-/* SONG LIST */
-.songlist { flex: 1; overflow-y: auto; }
-
-.songlist ul { list-style: none; }
-
-.songlist ul li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Pushes play button to the right */
-    padding: 12px;
-    margin-bottom: 4px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-
-.songlist ul li:hover { background: rgba(255, 255, 255, 0.05); }
-
-.song-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    overflow: hidden;
-}
-
-.song-left img { width: 18px; height: 18px; opacity: 0.7; }
-.song-left .info {
-    font-size: 14px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.playnow {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--green);
-    opacity: 0.8;
-}
-.playnow img { width: 14px; height: 14px; }
-
-.sidebar-footer {
-    display: flex;
-    gap: 16px;
-    padding-top: 20px;
-    font-size: 11px;
-    color: #666;
-}
-
-/* =========================================================
-   RIGHT: CONTENT & PLAYER
-========================================================= */
-.right {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: radial-gradient(circle at top right, rgba(0, 229, 160, 0.15), transparent 40%), var(--panel-right);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.content-area {
-    flex: 1;
-    overflow-y: auto;
-    padding: 40px;
-}
-
-/* BIG TYPOGRAPHY */
-.eyebrow {
-    color: var(--green);
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-}
-
-.section-heading h1 {
-    color: var(--green);
-    font-size: clamp(40px, 6vw, 85px); /* Matches the massive text in the screenshot */
-    font-weight: 900;
-    letter-spacing: -2px;
-    line-height: 1.1;
-    text-shadow: 0 0 40px var(--green-glow); /* Soft glow behind text */
-}
-
-.section-subtitle {
-    margin-top: 12px;
-    color: var(--text-sub);
-    font-size: 16px;
-    margin-bottom: 40px;
-}
-
-/* CARDS EXACT MATCH */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
-}
-
-.album-card {
-    padding: 24px;
-    background: rgba(0, 229, 160, 0.03);
-    border: 2px solid rgba(0, 229, 160, 0.6);
-    border-radius: 16px;
-    cursor: pointer;
-    box-shadow: inset 0 0 20px rgba(0, 229, 160, 0.05), 0 0 15px rgba(0, 229, 160, 0.1);
-    transition: 0.3s ease;
-}
-
-.album-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--green);
-    box-shadow: inset 0 0 30px rgba(0, 229, 160, 0.1), 0 10px 25px rgba(0, 229, 160, 0.2);
-}
-
-.album-card h2 {
-    color: var(--green);
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 12px;
-}
-
-.album-card h4 {
-    color: var(--text-sub);
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.5;
-}
-
-/* =========================================================
-   PLAYER BOTTOM PANEL
-========================================================= */
-.side {
-    width: 100%;
-    padding: 20px 40px;
-    background: linear-gradient(to top, #090b0b, transparent);
-    border-top: 1px solid rgba(255,255,255,0.03);
-}
-
-.now-playing-label {
-    text-align: center;
-    color: var(--green);
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    margin-bottom: 16px;
-}
-
-.player-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-/* Disc */
-#disc {
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--green) 0 10%, #103e35 11% 20%, #111 21% 100%);
-    border: 2px solid #202727;
-    box-shadow: 0 0 20px var(--green-glow);
-}
-.rotate { animation: spin 4s linear infinite; }
-@keyframes spin { 100% { transform: rotate(360deg); } }
-
-/* Track Info */
-.infos {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-.songinfo { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.songtime { font-size: 12px; color: var(--text-sub); }
-
-/* Seekbar */
-.seek-container { flex: 1; padding: 0 20px; }
-.seekbar {
-    height: 6px;
-    background: #333;
-    border-radius: 10px;
-    position: relative;
-    cursor: pointer;
-}
-.circle {
-    width: 12px;
-    height: 12px;
-    background: var(--green);
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px var(--green);
-}
-
-/* Controls */
-.player-buttons { display: flex; align-items: center; gap: 12px; }
-
-.control-btn, .skip-btn {
-    width: 48px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: #1a1a1a;
-    cursor: pointer;
-    transition: 0.2s ease;
-}
-.skip-btn { width: auto; padding: 0 16px; border-radius: 24px; font-size: 14px; font-weight: 600; }
-
-.control-btn:hover, .skip-btn:hover { background: #2a2a2a; border-color: rgba(255,255,255,0.2); }
-
-.control-btn img { width: 18px; }
-
-/* The Glowing Play Button */
-.play {
-    width: 64px;
-    height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--green);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 25px rgba(0, 229, 160, 0.4);
-    transition: 0.2s ease;
-}
-.play:hover { transform: scale(1.05); box-shadow: 0 0 35px rgba(0, 229, 160, 0.6); }
-.play img { width: 24px; filter: brightness(0); /* Makes icon black against green background */ } 
-
-/* Volume */
-#volume {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 120px;
-}
-#volume span { font-size: 10px; font-weight: 800; color: #888; }
-#volume input { width: 100%; accent-color: var(--green); cursor: pointer; }
-
-/* =========================================================
-   RESPONSIVE (1100px, 850px, 650px)
-========================================================= */
-@media (max-width: 1100px) {
-    .left { width: 280px; }
-    .search-box { width: 280px; }
-    .section-heading h1 { font-size: clamp(32px, 5vw, 60px); }
-}
-
-@media (max-width: 850px) {
-    main { flex-direction: column; }
-    .cont { flex-direction: column; overflow-y: auto; }
-    .left { width: 100%; height: 300px; flex-shrink: 0; }
-    .right { flex: none; overflow: visible; }
-    .player-content { flex-wrap: wrap; justify-content: center; }
-    .seek-container { min-width: 100%; order: -1; padding: 0; margin-bottom: 12px; }
-    #volume { display: none; }
-}
-
-@media (max-width: 650px) {
-    .top { padding: 12px; height: auto; flex-direction: column; gap: 16px; }
-    .first { width: 100%; justify-content: space-between; gap: 12px; }
-    .search-box { flex: 1; width: auto; }
-    .buttons { display: none; }
-    .content-area { padding: 24px; }
-    .player-buttons { gap: 8px; }
-    .play { width: 54px; height: 54px; }
-    .control-btn, .skip-btn { width: 40px; height: 40px; padding: 0 12px; font-size: 12px; }
-}/* =========================================================
-   RESET
-========================================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html,
-body {
-    width: 100%;
-    min-height: 100%;
-}
-
-body {
-    min-height: 100vh;
-    background: #050505;
-    color: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
-}
-
-:root {
-    --black: #050505;
-    --panel: #101414;
-    --panel-2: #151919;
-    --green: #00e5a0;
-    --green-2: #00cfa0;
-    --text: #f4f4f4;
-    --muted: #8a9290;
-    --border: rgba(255, 255, 255, 0.09);
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar {
-    width: 5px;
-}
-
-::-webkit-scrollbar-track {
-    background: #080808;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 20px;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
-
-main {
-    width: 100%;
-    min-height: 100vh;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 8px;
-
-    padding: 8px;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.top {
-    width: 100%;
-    height: 88px;
-
-    padding: 0 18px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background:
-        radial-gradient(
-            circle at 75% 50%,
-            rgba(0, 229, 160, 0.13),
-            transparent 35%
-        ),
-        #07120f;
-
-    border-radius: 0 0 16px 16px;
-
-    border-bottom: 1px solid rgba(0, 229, 160, 0.08);
-}
-
-
-/* LEFT HEADER */
-
-.first {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-
-    min-width: 0;
-}
-
-
-/* LOGO */
-
-#logo {
-    width: 58px;
-    height: 58px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-}
-
-
-/* SEARCH */
-
-.search-box {
-    width: 480px;
-    height: 58px;
-
-    display: flex;
-    align-items: center;
-
-    gap: 12px;
-
-    padding: 0 18px;
-
-    background: #292b2b;
-
-    border: 1px solid rgba(255, 255, 255, 0.13);
-
-    border-radius: 32px;
-
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    transition: 0.2s ease;
-}
-
-.search-box:hover {
-    background: #303232;
-}
-
-.search-box:focus-within {
-    border-color: rgba(0, 229, 160, 0.5);
-
-    box-shadow:
-        0 0 0 3px rgba(0, 229, 160, 0.08);
-}
-
-#home {
-    width: 20px;
-    height: 20px;
-
-    flex-shrink: 0;
-}
-
-.top input {
-    width: 100%;
-    height: 100%;
-
-    border: none;
-    outline: none;
-
-    background: transparent;
-
-    color: white;
-
-    font-size: 14px;
-}
-
-.top input::placeholder {
-    color: #c5c5c5;
-}
-
-
-/* =========================================================
-   HEADER BUTTONS
-========================================================= */
-
-.top > .buttons {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.Signup,
-.login {
-    height: 52px;
-
-    padding: 0 28px;
-
-    border-radius: 28px;
-
-    font-size: 14px;
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.Signup {
-    color: white;
-
-    background: transparent;
-
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.Signup:hover {
-    background: rgba(255, 255, 255, 0.07);
-}
-
-.login {
-    color: white;
-
-    background: linear-gradient(
-        135deg,
-        #00e5a0,
-        #00cdb2
-    );
-
-    border: none;
-
-    box-shadow:
-        0 8px 25px rgba(0, 229, 160, 0.18);
-}
-
-.login:hover {
-    transform: translateY(-2px);
-
-    box-shadow:
-        0 12px 30px rgba(0, 229, 160, 0.28);
-}
-
-
-/* =========================================================
-   MAIN CONTAINER
-========================================================= */
-
-.cont {
-    width: 100%;
-
-    height: calc(100vh - 104px);
-
-    min-height: 560px;
-
-    display: flex;
-
-    gap: 10px;
-}
-
-
-/* =========================================================
-   LEFT LIBRARY
-========================================================= */
-
-.left {
-    width: 380px;
-    min-width: 380px;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    padding: 28px 20px 16px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #191e1d,
-            #101515
-        );
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    border-radius: 18px;
-
-    overflow: hidden;
-}
-
-
-/* LIBRARY HEADER */
-
-.library-header {
-    width: 100%;
-
-    padding: 8px 10px 20px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
-}
-
-.library-title {
-    color: var(--green);
-
-    font-size: 18px;
-    font-weight: 800;
-}
-
-.library-add {
-    width: 42px;
-    height: 42px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid rgba(255, 255, 255, 0.13);
-
-    border-radius: 50%;
-
-    color: var(--green);
-
-    font-size: 24px;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.library-add:hover {
-    background: rgba(0, 229, 160, 0.1);
-
-    transform: rotate(90deg);
-}
-
-
-/* =========================================================
-   SONG LIST
-========================================================= */
-
-.songlist {
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    padding: 12px 2px;
-}
-
-.songlist ul {
-    width: 100%;
-}
-
-.songlist ul li {
-    width: 100%;
-
-    min-height: 58px;
-
-    list-style: none;
-
-    display: flex;
-    align-items: center;
-
-    gap: 10px;
-
-    padding: 8px 12px;
-
-    margin: 3px 0;
-
-    border-radius: 9px;
-
-    color: #eeeeee;
-
-    cursor: pointer;
-
-    transition:
-        background 0.2s ease,
-        color 0.2s ease;
-}
-
-.songlist ul li:hover {
-    background: rgba(255, 255, 255, 0.055);
-
-    color: white;
-}
-
-.songlist ul li > img {
-    width: 20px;
-    height: 20px;
-
-    flex-shrink: 0;
-}
-
-.songlist .info {
-    flex: 1;
-
-    min-width: 0;
-}
-
-.songlist .info div {
-    width: 100%;
-
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
-
-    font-size: 12px;
-
-    line-height: 1.4;
-}
-
-.playnow {
-    display: flex;
-    align-items: center;
-
-    gap: 7px;
-
-    flex-shrink: 0;
-}
-
-.playnow span {
-    font-size: 11px;
-
-    color: #ddd;
-}
-
-.playnow img {
-    width: 17px;
-    height: 17px;
-}
-
-
-/* =========================================================
-   SIDEBAR FOOTER
-========================================================= */
-
-.sidebar-footer {
-    display: flex;
-    align-items: center;
-
-    gap: 18px;
-
-    padding: 13px 10px 3px;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-
-    color: #8a8a8a;
-
-    font-size: 10px;
-}
-
-.sidebar-footer span {
-    cursor: pointer;
-
-    transition: color 0.2s ease;
-}
-
-.sidebar-footer span:hover {
-    color: white;
-}
-
-
-/* =========================================================
-   RIGHT PANEL
-========================================================= */
-
-.right {
-    flex: 1;
-
-    min-width: 0;
-    height: 100%;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at 75% 5%,
-            rgba(0, 229, 160, 0.14),
-            transparent 38%
-        ),
-        radial-gradient(
-            circle at 25% 100%,
-            rgba(0, 229, 160, 0.07),
-            transparent 30%
-        ),
-        #090d0d;
-
-    border: 1px solid rgba(255, 255, 255, 0.08);
-
-    border-radius: 18px;
-}
-
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.content-area {
-    flex: 1;
-
-    min-height: 0;
-
-    overflow-y: auto;
-
-    padding: 42px 45px;
-}
-
-
-/* HEADING */
-
-.section-heading {
-    margin-bottom: 28px;
-}
-
-.eyebrow {
-    margin-bottom: 10px;
-
-    color: var(--green);
-
-    font-size: 10px;
-
-    font-weight: 800;
-
-    letter-spacing: 3px;
-}
-
-.section-heading h1 {
-    color: var(--green);
-
-    font-size: 52px;
-
-    line-height: 0.95;
-
-    font-weight: 900;
-
-    letter-spacing: -2px;
-}
-
-.section-subtitle {
-    margin-top: 12px;
-
-    color: #e5e5e5;
-
-    font-size: 14px;
-
-    line-height: 1.4;
-}
-
-
-/* =========================================================
-   ALBUM CARDS
-========================================================= */
-
-.cards {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(2, minmax(240px, 315px));
-
-    gap: 22px;
-}
-
-
-/* CARD */
-
-.album-card {
-    width: 100%;
-
-    min-height: 122px;
-
-    padding: 17px 19px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 229, 160, 0.10),
-            rgba(255, 255, 255, 0.035)
-        );
-
-    border: 2px solid rgba(0, 229, 160, 0.9);
-
-    border-radius: 17px;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 0 18px rgba(0, 229, 160, 0.12);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-}
-
-.album-card:hover {
-    transform: translateY(-3px);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(0, 229, 160, 0.18),
-            rgba(255, 255, 255, 0.05)
-        );
-
-    box-shadow:
-        0 0 30px rgba(0, 229, 160, 0.22);
-}
-
-
-/* HIDE THE IMAGE
-   Target screenshot uses clean cards */
-
-.album-image {
-    display: none;
-}
-
-.album-content {
-    width: 100%;
-}
-
-.album-tag {
-    display: none;
-}
-
-.album-card h2 {
-    margin-bottom: 8px;
-
-    color: var(--green);
-
-    font-size: 21px;
-
-    line-height: 1;
-
-    font-weight: 800;
-}
-
-.album-card h4 {
-    color: #eeeeee;
-
-    font-size: 11px;
-
-    line-height: 1.45;
-
-    font-weight: 400;
-}
-
-
-/* =========================================================
-   PLAYER
-========================================================= */
-
-.side {
-    width: 100%;
-
-    min-height: 190px;
-
-    flex-shrink: 0;
-
-    padding: 16px 34px 22px;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 14px;
-
-    background:
-        linear-gradient(
-            180deg,
-            #242626,
-            #141717
-        );
-
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-
-/* NOW PLAYING */
-
-.now-playing-label {
-    text-align: center;
-
-    color: var(--green);
-
-    font-size: 9px;
-
-    font-weight: 800;
-
-    letter-spacing: 3px;
-}
-
-
-/* =========================================================
-   PLAYER CONTENT
-========================================================= */
-
-.player-content {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        75px
-        minmax(150px, 260px)
-        minmax(180px, 1fr)
-        auto
-        125px;
-
-    align-items: center;
-
-    gap: 20px;
-}
-
-
-/* =========================================================
-   DISC
-========================================================= */
-
-.player-art {
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-}
-
-#disc {
-    width: 70px;
-    height: 70px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            #00e5a0 0 8%,
-            #103e35 9% 16%,
-            #101010 17% 29%,
-            #343838 30% 33%,
-            #080909 34% 100%
-        );
-
-    border: 3px solid #202727;
-
-    box-shadow:
-        0 0 0 5px #111,
-        0 0 24px rgba(0, 229, 160, 0.35);
-
-    pointer-events: none;
-}
-
-.rotate {
-    animation: spin 3s linear infinite;
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-
-/* =========================================================
-   SONG INFO
-========================================================= */
-
-.infos {
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 5px;
-}
-
-.infos .songinfo {
-    width: 100%;
-
-    color: white;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    overflow: hidden;
-
-    white-space: nowrap;
-
-    text-overflow: ellipsis;
-}
-
-.songtime {
-    color: #d0d0d0;
-
-    font-size: 10px;
-
-    white-space: nowrap;
-}
-
-
-/* =========================================================
-   SEEK BAR
-========================================================= */
-
-.seek-container {
-    width: 100%;
-
-    min-width: 140px;
-}
-
-.seekbar {
-    width: 100%;
-
-    height: 5px;
-
-    position: relative;
-
-    background: #575b5b;
-
-    border-radius: 20px;
-
-    cursor: pointer;
-}
-
-.seekbar::before {
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-    top: 0;
-
-    width: 0%;
-    height: 100%;
-
-    background: var(--green);
-
-    border-radius: inherit;
-
-    pointer-events: none;
-}
-
-.circle {
-    width: 14px;
-    height: 14px;
-
-    position: absolute;
-
-    left: 0;
-    top: 50%;
-
-    transform: translate(-50%, -50%);
-
-    background: var(--green);
-
-    border-radius: 50%;
-
-    box-shadow:
-        0 0 10px rgba(0, 229, 160, 0.65);
-
-    pointer-events: none;
-}
-
-
-/* =========================================================
-   PLAYER BUTTONS
-========================================================= */
-
-.side .player-buttons {
-    width: auto;
-
-    min-width: max-content;
-
-    height: auto;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    gap: 9px;
-
-    position: static;
-}
-
-.side .player-buttons > div {
-    width: 54px;
-    height: 54px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    flex-shrink: 0;
-
-    background: #484a4a;
-
-    border: 1px solid rgba(255, 255, 255, 0.13);
-
-    border-radius: 50%;
-
-    cursor: pointer;
-
-    transition: 0.2s ease;
-}
-
-.side .player-buttons > div:hover {
-    background: #5a5d5d;
-
-    transform: scale(1.04);
-}
-
-.side .player-buttons > div img {
-    width: 21px;
-    height: 21px;
-
-    display: block;
-}
-
-
-/* =========================================================
-   SKIP BUTTONS
-========================================================= */
-
-#minus5sec,
-#plus5sec {
-    width: 78px !important;
-    height: 54px !important;
-
-    background: #414444 !important;
-
-    border-radius: 11px !important;
-
-    color: white;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    border: 1px solid rgba(255, 255, 255, 0.13) !important;
-
-    cursor: pointer;
-
-    user-select: none;
-}
-
-#minus5sec:hover,
-#plus5sec:hover {
-    background: #555959 !important;
-}
-
-
-/* =========================================================
-   MAIN PLAY
-========================================================= */
-
-.side .player-buttons .play {
-    width: 66px;
-
-    height: 66px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #00e5a0,
-            #00c9b0
-        );
-
-    border: none;
-
-    box-shadow:
-        0 0 25px rgba(0, 229, 160, 0.28);
-}
-
-.side .player-buttons .play:hover {
-    transform: scale(1.07);
-
-    box-shadow:
-        0 0 32px rgba(0, 229, 160, 0.4);
-}
-
-.side .player-buttons .play img {
-    width: 23px;
-    height: 23px;
-
-    filter: none;
-}
-
-
-/* =========================================================
-   VOLUME
-========================================================= */
-
-#voulme {
-    width: 125px;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: flex-end;
-
-    gap: 8px;
-}
-
-#voulme span {
-    color: #aaa;
-
-    font-size: 9px;
-
-    font-weight: 700;
-
-    letter-spacing: 1px;
-}
-
-#voulme input {
-    width: 80px;
-    height: 4px;
-
-    cursor: pointer;
-
-    accent-color: var(--green);
-}
-
-
-/* =========================================================
-   1100px
-========================================================= */
-
-@media (max-width: 1100px) {
-
-    .left {
-        width: 300px;
-        min-width: 300px;
-    }
-
-    .search-box {
-        width: 380px;
-    }
-
-    .content-area {
-        padding: 32px;
-    }
-
-    .section-heading h1 {
-        font-size: 45px;
-    }
-
-    .player-content {
-        grid-template-columns:
-            65px
-            160px
-            minmax(130px, 1fr)
-            auto;
-
-        gap: 12px;
-    }
-
-    #voulme {
-        display: none;
-    }
-}
-
-
-/* =========================================================
-   850px
-========================================================= */
-
-@media (max-width: 850px) {
-
-    .top {
-        height: 78px;
-    }
-
-    #logo {
-        width: 50px;
-        height: 50px;
-    }
-
-    .search-box {
-        width: 300px;
-        height: 50px;
-    }
-
-    .left {
-        width: 250px;
-        min-width: 250px;
-    }
-
-    .content-area {
-        padding: 28px;
-    }
-
-    .section-heading h1 {
-        font-size: 40px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-    }
-
-    .player-content {
-        grid-template-columns:
-            60px
-            140px
-            minmax(100px, 1fr)
-            auto;
-    }
-
-    .side .player-buttons > div {
-        width: 44px;
-        height: 44px;
-    }
-
-    .side .player-buttons .play {
-        width: 54px;
-        height: 54px;
-    }
-
-    #minus5sec,
-    #plus5sec {
-        width: 55px !important;
-    }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 650px) {
-
-    main {
-        padding: 6px;
-    }
-
-    .top {
-        height: auto;
-
-        padding: 10px;
-
-        flex-wrap: wrap;
-
-        gap: 9px;
-    }
-
-    .first {
-        width: 100%;
-    }
-
-    #logo {
-        width: 42px;
-        height: 42px;
-    }
-
-    .search-box {
-        flex: 1;
-
-        width: auto;
-
-        height: 42px;
-    }
-
-    .top > .buttons {
-        display: none;
-    }
-
-    .cont {
-        height: auto;
-
-        min-height: calc(100vh - 80px);
-
-        flex-direction: column;
-    }
-
-    .left {
-        width: 100%;
-        min-width: 0;
-
-        height: 190px;
-
-        border-radius: 14px;
-    }
-
-    .right {
-        width: 100%;
-
-        min-height: 650px;
-
-        height: auto;
-    }
-
-    .content-area {
-        padding: 25px 18px;
-    }
-
-    .section-heading h1 {
-        font-size: 34px;
-
-        letter-spacing: -1px;
-    }
-
-    .section-subtitle {
-        font-size: 12px;
-    }
-
-    .cards {
-        grid-template-columns: 1fr;
-
-        gap: 12px;
-    }
-
-    .album-card {
-        min-height: 105px;
-    }
-
-    .side {
-        min-height: 300px;
-
-        padding: 17px 15px 25px;
-    }
-
-    .player-content {
-        display: flex;
-
-        flex-direction: column;
-
-        align-items: center;
-
-        gap: 12px;
-    }
-
-    .infos {
-        width: 100%;
-        max-width: 300px;
-
-        text-align: center;
-    }
-
-    .infos .songinfo {
-        text-align: center;
-    }
-
-    .seek-container {
-        width: 100%;
-    }
-
-    .side .player-buttons {
-        width: 100%;
-
-        gap: 5px;
-    }
-
-    .side .player-buttons > div {
-        width: 42px;
-        height: 42px;
-    }
-
-    .side .player-buttons .play {
-        width: 54px;
-        height: 54px;
-    }
-
-    #minus5sec,
-    #plus5sec {
-        width: 58px !important;
-        height: 42px !important;
-
-        font-size: 12px;
-    }
-
-    #voulme {
-        display: flex;
-
-        width: 100%;
-
-        justify-content: center;
-    }
-}
-
-
-/* =========================================================
-   ICONS
-========================================================= */
-
-.invert {
-    filter: invert(1);
 }
