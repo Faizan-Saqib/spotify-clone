@@ -12,7 +12,7 @@
 
 html, body { height: 100%; }
 body {
-  background: #1ed760;
+  background: linear-gradient(180deg, #0a3a2a 0%, #06170f 30%, #050807 100%);
   background-attachment: fixed;
   color: var(--text);
   font-family: 'Inter', sans-serif;
