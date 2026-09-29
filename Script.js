@@ -1,42 +1,15 @@
-console.log("Spotify Clone Loaded");
+console.log("Spotify Clone Started");
 
-/* =========================================================
-   GLOBAL VARIABLES
-   ========================================================= */
+let crruntsong = new Audio();
 
-let currentSong = new Audio();
 let songs = [];
 let currFolder = "";
-let currentTrackIndex = -1;
-
-
-/* =========================================================
-   DOM ELEMENTS
-   ========================================================= */
-
-const playButton = document.querySelector("#play");
-const previousButton = document.querySelector("#previous");
-const nextButton = document.querySelector("#next");
-
-const songInfo = document.querySelector(".songinfo");
-const songTime = document.querySelector(".songtime");
-
-const seekContainer = document.querySelector(".seek-container");
-const seekbar = document.querySelector(".seekbar");
-const circle = document.querySelector(".circle");
-
-const volumeInput = document.querySelector("#voulme input");
-
-const minus5Button = document.querySelector("#minus5sec");
-const plus5Button = document.querySelector("#plus5sec");
-
-const songList = document.querySelector(".songlist ul");
-const cardContainer = document.querySelector(".cards");
+let currentSongIndex = -1;
 
 
 /* =========================================================
    SONG DATA
-   ========================================================= */
+========================================================= */
 
 async function getsongs(folder) {
 
@@ -62,50 +35,79 @@ async function getsongs(folder) {
 
     songs = songLists[folder] || [];
 
-    console.log("Current folder:", currFolder);
-    console.log("Songs:", songs);
+    currentSongIndex = -1;
 
     return songs;
 }
 
 
 /* =========================================================
+   ELEMENTS
+========================================================= */
+
+const playButton = document.querySelector("#play");
+const previousButton = document.querySelector("#previous");
+const nextButton = document.querySelector("#next");
+
+const seekbar = document.querySelector(".seekbar");
+const circle = document.querySelector(".circle");
+
+const songInfo = document.querySelector(".songinfo");
+const songTime = document.querySelector(".songtime");
+
+const volumeInput = document.querySelector("#voulme input");
+
+const disc = document.querySelector("#disc");
+
+
+/* =========================================================
    FORMAT TIME
-   ========================================================= */
+========================================================= */
 
 function formatTime(seconds) {
 
-    if (!Number.isFinite(seconds) || seconds < 0) {
+    if (!Number.isFinite(seconds)) {
         return "00:00";
     }
 
     const mins = Math.floor(seconds / 60);
+
     const secs = Math.floor(seconds % 60);
 
-    const formattedMins = String(mins).padStart(2, "0");
-    const formattedSecs = String(secs).padStart(2, "0");
-
-    return `${formattedMins}:${formattedSecs}`;
+    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 }
 
 
 /* =========================================================
-   CLEAN SONG NAME
-   ========================================================= */
+   UPDATE SEEK BAR
+========================================================= */
 
-function cleanSongName(song) {
+function updateSeekBar() {
 
-    return decodeURIComponent(
-        song
-            .replaceAll("%20", " ")
-            .replaceAll("%5C", "")
+    if (
+        !Number.isFinite(crruntsong.duration) ||
+        crruntsong.duration <= 0
+    ) {
+        seekbar.style.setProperty("--progress", "0%");
+        return;
+    }
+
+    const percent =
+        (crruntsong.currentTime / crruntsong.duration) * 100;
+
+    const safePercent =
+        Math.min(100, Math.max(0, percent));
+
+    seekbar.style.setProperty(
+        "--progress",
+        `${safePercent}%`
     );
 }
 
 
 /* =========================================================
    PLAY MUSIC
-   ========================================================= */
+========================================================= */
 
 function playMusic(track, pause = false) {
 
@@ -113,571 +115,68 @@ function playMusic(track, pause = false) {
         return;
     }
 
-    const cleanTrack = cleanSongName(track);
+    const index = songs.indexOf(track);
 
-    currentTrackIndex = songs.findIndex(
-        song => cleanSongName(song) === cleanTrack
-    );
-
-    if (currentTrackIndex === -1) {
-        currentTrackIndex = songs.findIndex(
-            song => song === track
-        );
+    if (index !== -1) {
+        currentSongIndex = index;
     }
 
-    currentSong.src =
-        `/${currFolder}/${encodeURIComponent(cleanTrack)}`;
+    crruntsong.src =
+        `/${currFolder}/${encodeURIComponent(track)}`;
 
-    currentSong.load();
+    songInfo.innerHTML = track;
+
+    songTime.innerHTML = "00:00 / 00:00";
+
+    updateSeekBar();
 
     if (!pause) {
 
-        currentSong
+        crruntsong
             .play()
             .then(() => {
 
-                if (playButton) {
-                    const img = playButton.querySelector("img");
+                playButton.querySelector("img").src =
+                    "pause.svg";
 
-                    if (img) {
-                        img.src = "pause.svg";
-                    }
-                }
+                disc.classList.add("rotate");
 
             })
             .catch(error => {
-                console.error("Audio play error:", error);
+
+                console.error(
+                    "Audio playback error:",
+                    error
+                );
+
             });
 
     } else {
 
-        if (playButton) {
-            const img = playButton.querySelector("img");
+        playButton.querySelector("img").src =
+            "play.svg";
 
-            if (img) {
-                img.src = "play.svg";
-            }
-        }
+        disc.classList.remove("rotate");
     }
-
-    if (songInfo) {
-        songInfo.innerHTML = cleanTrack;
-    }
-
-    if (songTime) {
-        songTime.innerHTML = "00:00 / 00:00";
-    }
-
-    updateSeekbar(0);
 }
 
 
 /* =========================================================
-   PLAY / PAUSE BUTTON
-   ========================================================= */
-
-if (playButton) {
-
-    playButton.addEventListener("click", () => {
-
-        if (!currentSong.src) {
-            return;
-        }
-
-        if (currentSong.paused) {
-
-            currentSong
-                .play()
-                .then(() => {
-
-                    const img =
-                        playButton.querySelector("img");
-
-                    if (img) {
-                        img.src = "pause.svg";
-                    }
-
-                })
-                .catch(error => {
-                    console.error(
-                        "Unable to play audio:",
-                        error
-                    );
-                });
-
-        } else {
-
-            currentSong.pause();
-
-            const img =
-                playButton.querySelector("img");
-
-            if (img) {
-                img.src = "play.svg";
-            }
-        }
-
-    });
-
-}
-
-
-/* =========================================================
-   AUDIO TIME UPDATE
-   ========================================================= */
-
-currentSong.addEventListener("timeupdate", () => {
-
-    if (!Number.isFinite(currentSong.duration)) {
-        return;
-    }
-
-    const current = currentSong.currentTime;
-    const duration = currentSong.duration;
-
-    if (songTime) {
-
-        songTime.innerHTML =
-            `${formatTime(current)} / ${formatTime(duration)}`;
-
-    }
-
-    const percentage =
-        duration > 0
-            ? (current / duration) * 100
-            : 0;
-
-    updateSeekbar(percentage);
-
-});
-
-
-/* =========================================================
-   AUDIO METADATA LOADED
-   ========================================================= */
-
-currentSong.addEventListener("loadedmetadata", () => {
-
-    if (songTime) {
-
-        songTime.innerHTML =
-            `${formatTime(currentSong.currentTime)} / ${formatTime(currentSong.duration)}`;
-
-    }
-
-    updateSeekbar(
-        currentSong.duration > 0
-            ? (currentSong.currentTime / currentSong.duration) * 100
-            : 0
-    );
-
-});
-
-
-/* =========================================================
-   AUDIO ENDED
-   ========================================================= */
-
-currentSong.addEventListener("ended", () => {
-
-    if (playButton) {
-
-        const img =
-            playButton.querySelector("img");
-
-        if (img) {
-            img.src = "play.svg";
-        }
-    }
-
-    /*
-       Automatically play next song
-    */
-
-    if (
-        currentTrackIndex >= 0 &&
-        currentTrackIndex + 1 < songs.length
-    ) {
-
-        playMusic(
-            songs[currentTrackIndex + 1]
-        );
-
-    } else {
-
-        updateSeekbar(0);
-    }
-
-});
-
-
-/* =========================================================
-   SEEK BAR UPDATE
-   ========================================================= */
-
-function updateSeekbar(percent) {
-
-    if (!seekbar || !circle) {
-        return;
-    }
-
-    const safePercent =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(percent) || 0
-            )
-        );
-
-    /*
-       CSS uses this variable to create
-       the green progress section.
-    */
-
-    seekbar.style.setProperty(
-        "--progress",
-        `${safePercent}%`
-    );
-
-    /*
-       Move the circle horizontally.
-    */
-
-    circle.style.left =
-        `${safePercent}%`;
-
-}
-
-
-/* =========================================================
-   SEEK BAR CLICK
-   ========================================================= */
-
-if (seekContainer && seekbar) {
-
-    seekContainer.addEventListener(
-        "click",
-        (event) => {
-
-            if (
-                !currentSong.duration ||
-                !Number.isFinite(currentSong.duration)
-            ) {
-                return;
-            }
-
-            /*
-               Get the actual horizontal
-               position of the click.
-            */
-
-            const rect =
-                seekbar.getBoundingClientRect();
-
-            const clickX =
-                event.clientX - rect.left;
-
-            /*
-               Convert click position
-               into percentage.
-            */
-
-            let percent =
-                (clickX / rect.width) * 100;
-
-            percent =
-                Math.max(
-                    0,
-                    Math.min(100, percent)
-                );
-
-            /*
-               Change audio position.
-            */
-
-            currentSong.currentTime =
-                (currentSong.duration * percent) / 100;
-
-            /*
-               Immediately update UI.
-            */
-
-            updateSeekbar(percent);
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   SEEK BAR DRAGGING
-   ========================================================= */
-
-let isSeeking = false;
-
-
-/*
-   Start dragging
-*/
-
-if (seekContainer) {
-
-    seekContainer.addEventListener(
-        "mousedown",
-        (event) => {
-
-            if (
-                !currentSong.duration ||
-                !Number.isFinite(currentSong.duration)
-            ) {
-                return;
-            }
-
-            isSeeking = true;
-
-            seekToMousePosition(event);
-
-        }
-    );
-
-}
-
-
-/*
-   Continue dragging
-*/
-
-document.addEventListener(
-    "mousemove",
-    (event) => {
-
-        if (!isSeeking) {
-            return;
-        }
-
-        seekToMousePosition(event);
-
-    }
-);
-
-
-/*
-   Stop dragging
-*/
-
-document.addEventListener(
-    "mouseup",
-    () => {
-
-        isSeeking = false;
-
-    }
-);
-
-
-/* =========================================================
-   SEEK TO MOUSE POSITION
-   ========================================================= */
-
-function seekToMousePosition(event) {
-
-    if (
-        !seekbar ||
-        !currentSong.duration ||
-        !Number.isFinite(currentSong.duration)
-    ) {
-        return;
-    }
-
-    const rect =
-        seekbar.getBoundingClientRect();
-
-    let percent =
-        ((event.clientX - rect.left) / rect.width) * 100;
-
-    percent =
-        Math.max(
-            0,
-            Math.min(100, percent)
-        );
-
-    currentSong.currentTime =
-        (currentSong.duration * percent) / 100;
-
-    updateSeekbar(percent);
-
-}
-
-
-/* =========================================================
-   MINUS 5 SECONDS
-   ========================================================= */
-
-if (minus5Button) {
-
-    minus5Button.addEventListener(
-        "click",
-        () => {
-
-            if (!currentSong.duration) {
-                return;
-            }
-
-            currentSong.currentTime =
-                Math.max(
-                    0,
-                    currentSong.currentTime - 5
-                );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   PLUS 5 SECONDS
-   ========================================================= */
-
-if (plus5Button) {
-
-    plus5Button.addEventListener(
-        "click",
-        () => {
-
-            if (!currentSong.duration) {
-                return;
-            }
-
-            currentSong.currentTime =
-                Math.min(
-                    currentSong.duration,
-                    currentSong.currentTime + 5
-                );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   PREVIOUS SONG
-   ========================================================= */
-
-if (previousButton) {
-
-    previousButton.addEventListener(
-        "click",
-        () => {
-
-            if (!songs.length) {
-                return;
-            }
-
-            /*
-               If the song has played for more than
-               3 seconds, previous should restart it.
-            */
-
-            if (currentSong.currentTime > 3) {
-
-                currentSong.currentTime = 0;
-
-                return;
-            }
-
-            if (currentTrackIndex > 0) {
-
-                playMusic(
-                    songs[currentTrackIndex - 1]
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   NEXT SONG
-   ========================================================= */
-
-if (nextButton) {
-
-    nextButton.addEventListener(
-        "click",
-        () => {
-
-            if (!songs.length) {
-                return;
-            }
-
-            if (
-                currentTrackIndex >= 0 &&
-                currentTrackIndex + 1 < songs.length
-            ) {
-
-                playMusic(
-                    songs[currentTrackIndex + 1]
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   VOLUME
-   ========================================================= */
-
-if (volumeInput) {
-
-    currentSong.volume =
-        Number(volumeInput.value) / 100;
-
-    volumeInput.addEventListener(
-        "input",
-        (event) => {
-
-            const volume =
-                Number(event.target.value) / 100;
-
-            currentSong.volume = volume;
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   DISPLAY SONG LIST
-   ========================================================= */
+   DISPLAY SONGS
+========================================================= */
 
 function displaySongs() {
 
-    if (!songList) {
-        return;
-    }
+    const songul =
+        document.querySelector(".songlist ul");
 
-    songList.innerHTML = "";
+    songul.innerHTML = "";
 
-    for (const song of songs) {
+    songs.forEach((song, index) => {
 
-        const cleanName =
-            cleanSongName(song);
+        songul.innerHTML += `
 
-        songList.innerHTML += `
-
-            <li>
+            <li data-index="${index}">
 
                 <img
                     class="invert"
@@ -688,7 +187,7 @@ function displaySongs() {
                 <div class="info">
 
                     <div>
-                        ${cleanName}
+                        ${song}
                     </div>
 
                 </div>
@@ -710,137 +209,100 @@ function displaySongs() {
             </li>
 
         `;
-    }
 
+    });
 
-    /*
-       Add click events to songs
-    */
 
     const songElements =
-        songList.querySelectorAll("li");
+        songul.querySelectorAll("li");
 
 
-    songElements.forEach(
-        (songElement, index) => {
+    songElements.forEach(songElement => {
 
-            songElement.addEventListener(
-                "click",
-                () => {
+        songElement.addEventListener(
+            "click",
+            () => {
 
-                    playMusic(
-                        songs[index]
-                    );
+                const index =
+                    Number(songElement.dataset.index);
 
-                }
-            );
+                currentSongIndex = index;
 
-        }
-    );
+                playMusic(
+                    songs[index]
+                );
+
+            }
+        );
+
+    });
 
 }
 
 
 /* =========================================================
    DISPLAY ALBUMS
-   ========================================================= */
+========================================================= */
 
 function displayAlbums() {
 
-    if (!cardContainer) {
-        return;
-    }
+    const cardcontainer =
+        document.querySelector(".cards");
 
-    const albums = [
+    cardcontainer.innerHTML = `
 
-        {
-            folder: "cs",
+        <div
+            data-folder="cs"
+            class="album-card"
+        >
 
-            title: "Chill & Soul",
+            <div class="album-content">
 
-            description:
-                "A collection of relaxing and soulful tracks.",
-
-            className: ""
-        },
-
-        {
-            folder: "ncs",
-
-            title: "NCS",
-
-            description:
-                "Energetic tracks for every moment.",
-
-            className: "blue"
-        }
-
-    ];
-
-
-    cardContainer.innerHTML = "";
-
-
-    albums.forEach(album => {
-
-        cardContainer.innerHTML += `
-
-            <div
-                data-folder="${album.folder}"
-                class="album-card"
-            >
-
-                <div class="album-image">
-
-                    <img
-                        src="/songs/${album.folder}/cover.jpeg"
-                        alt="${album.title}"
-                    >
-
-                    <div class="image-overlay"></div>
-
-                    <div class="album-play">
-
-                        <img
-                            src="play.svg"
-                            class="invert"
-                            alt="Play"
-                        >
-
-                    </div>
-
+                <div class="album-tag">
+                    CHILL
                 </div>
 
+                <h2>
+                    Chill & Soul
+                </h2>
 
-                <div class="album-content">
-
-                    <div class="album-tag ${album.className}">
-                        ${album.folder === "cs" ? "CHILL" : "ENERGY"}
-                    </div>
-
-                    <h2>
-                        ${album.title}
-                    </h2>
-
-                    <h4>
-                        ${album.description}
-                    </h4>
-
-                </div>
+                <h4>
+                    A collection of relaxing and soulful tracks.
+                </h4>
 
             </div>
 
-        `;
-
-    });
+        </div>
 
 
-    /*
-       Add album click events
-    */
+        <div
+            data-folder="ncs"
+            class="album-card"
+        >
+
+            <div class="album-content">
+
+                <div class="album-tag blue">
+                    ENERGY
+                </div>
+
+                <h2>
+                    NCS
+                </h2>
+
+                <h4>
+                    Energetic tracks for every moment.
+                </h4>
+
+            </div>
+
+        </div>
+
+    `;
+
 
     const albumCards =
-        cardContainer.querySelectorAll(".album-card");
+        document.querySelectorAll(".album-card");
 
 
     albumCards.forEach(card => {
@@ -850,31 +312,14 @@ function displayAlbums() {
             async () => {
 
                 const folder =
-                    card.dataset.folder;
-
-                console.log(
-                    "Album clicked:",
-                    folder
-                );
-
+                    `songs/${card.dataset.folder}`;
 
                 songs =
-                    await getsongs(
-                        `songs/${folder}`
-                    );
-
+                    await getsongs(folder);
 
                 displaySongs();
 
-
-                /*
-                   Load first song without
-                   automatically playing it.
-                */
-
                 if (songs.length > 0) {
-
-                    currentTrackIndex = 0;
 
                     playMusic(
                         songs[0],
@@ -892,22 +337,403 @@ function displayAlbums() {
 
 
 /* =========================================================
-   INITIAL SONG LIST
-   ========================================================= */
+   PLAY / PAUSE
+========================================================= */
 
-async function loadInitialSongs() {
+playButton.addEventListener(
+    "click",
+    () => {
 
-    await getsongs("songs/cs");
+        if (!crruntsong.src) {
+
+            if (songs.length > 0) {
+
+                currentSongIndex = 0;
+
+                playMusic(
+                    songs[0]
+                );
+
+            }
+
+            return;
+        }
+
+
+        if (crruntsong.paused) {
+
+            crruntsong
+                .play()
+                .then(() => {
+
+                    playButton.querySelector("img").src =
+                        "pause.svg";
+
+                    disc.classList.add("rotate");
+
+                });
+
+        } else {
+
+            crruntsong.pause();
+
+            playButton.querySelector("img").src =
+                "play.svg";
+
+            disc.classList.remove("rotate");
+        }
+
+    }
+);
+
+
+/* =========================================================
+   TIME UPDATE
+========================================================= */
+
+crruntsong.addEventListener(
+    "timeupdate",
+    () => {
+
+        songTime.innerHTML =
+            `${formatTime(crruntsong.currentTime)} / ${formatTime(crruntsong.duration)}`;
+
+        updateSeekBar();
+
+    }
+);
+
+
+/* =========================================================
+   METADATA LOADED
+========================================================= */
+
+crruntsong.addEventListener(
+    "loadedmetadata",
+    () => {
+
+        songTime.innerHTML =
+            `${formatTime(crruntsong.currentTime)} / ${formatTime(crruntsong.duration)}`;
+
+        updateSeekBar();
+
+    }
+);
+
+
+/* =========================================================
+   SONG ENDED
+========================================================= */
+
+crruntsong.addEventListener(
+    "ended",
+    () => {
+
+        if (
+            currentSongIndex >= 0 &&
+            currentSongIndex < songs.length - 1
+        ) {
+
+            currentSongIndex++;
+
+            playMusic(
+                songs[currentSongIndex]
+            );
+
+        } else {
+
+            playButton.querySelector("img").src =
+                "play.svg";
+
+            disc.classList.remove("rotate");
+
+            updateSeekBar();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SEEK BAR
+   FIXED: HORIZONTAL X POSITION
+========================================================= */
+
+seekbar.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            !Number.isFinite(crruntsong.duration) ||
+            crruntsong.duration <= 0
+        ) {
+            return;
+        }
+
+
+        const rect =
+            seekbar.getBoundingClientRect();
+
+
+        const clickX =
+            event.clientX - rect.left;
+
+
+        let percent =
+            clickX / rect.width;
+
+
+        percent =
+            Math.min(
+                1,
+                Math.max(0, percent)
+            );
+
+
+        crruntsong.currentTime =
+            crruntsong.duration * percent;
+
+
+        updateSeekBar();
+
+    }
+);
+
+
+/* =========================================================
+   SEEK BAR DRAGGING
+========================================================= */
+
+let isDragging = false;
+
+
+seekbar.addEventListener(
+    "pointerdown",
+    (event) => {
+
+        if (
+            !Number.isFinite(crruntsong.duration) ||
+            crruntsong.duration <= 0
+        ) {
+            return;
+        }
+
+        isDragging = true;
+
+        seekbar.setPointerCapture(
+            event.pointerId
+        );
+
+        seekToPosition(event);
+
+    }
+);
+
+
+seekbar.addEventListener(
+    "pointermove",
+    (event) => {
+
+        if (!isDragging) {
+            return;
+        }
+
+        seekToPosition(event);
+
+    }
+);
+
+
+seekbar.addEventListener(
+    "pointerup",
+    () => {
+
+        isDragging = false;
+
+    }
+);
+
+
+seekbar.addEventListener(
+    "pointercancel",
+    () => {
+
+        isDragging = false;
+
+    }
+);
+
+
+function seekToPosition(event) {
+
+    const rect =
+        seekbar.getBoundingClientRect();
+
+
+    const position =
+        event.clientX - rect.left;
+
+
+    let percent =
+        position / rect.width;
+
+
+    percent =
+        Math.min(
+            1,
+            Math.max(0, percent)
+        );
+
+
+    crruntsong.currentTime =
+        crruntsong.duration * percent;
+
+
+    updateSeekBar();
+
+}
+
+
+/* =========================================================
+   -5 SECONDS
+========================================================= */
+
+document
+    .querySelector("#minus5sec")
+    .addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            if (
+                !Number.isFinite(crruntsong.duration)
+            ) {
+                return;
+            }
+
+            crruntsong.currentTime =
+                Math.max(
+                    0,
+                    crruntsong.currentTime - 5
+                );
+
+        }
+    );
+
+
+/* =========================================================
+   +5 SECONDS
+========================================================= */
+
+document
+    .querySelector("#plus5sec")
+    .addEventListener(
+        "click",
+        (event) => {
+
+            event.stopPropagation();
+
+            if (
+                !Number.isFinite(crruntsong.duration)
+            ) {
+                return;
+            }
+
+            crruntsong.currentTime =
+                Math.min(
+                    crruntsong.duration,
+                    crruntsong.currentTime + 5
+                );
+
+        }
+    );
+
+
+/* =========================================================
+   PREVIOUS
+========================================================= */
+
+previousButton.addEventListener(
+    "click",
+    () => {
+
+        if (!songs.length) {
+            return;
+        }
+
+        if (currentSongIndex > 0) {
+
+            currentSongIndex--;
+
+            playMusic(
+                songs[currentSongIndex]
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   NEXT
+========================================================= */
+
+nextButton.addEventListener(
+    "click",
+    () => {
+
+        if (!songs.length) {
+            return;
+        }
+
+        if (
+            currentSongIndex <
+            songs.length - 1
+        ) {
+
+            currentSongIndex++;
+
+            playMusic(
+                songs[currentSongIndex]
+            );
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   VOLUME
+========================================================= */
+
+volumeInput.addEventListener(
+    "input",
+    (event) => {
+
+        crruntsong.volume =
+            Number(event.target.value) / 100;
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZATION
+========================================================= */
+
+async function main() {
+
+    songs =
+        await getsongs("songs/cs");
+
+    displayAlbums();
 
     displaySongs();
 
-    /*
-       Load first song but don't play automatically.
-    */
-
     if (songs.length > 0) {
-
-        currentTrackIndex = 0;
 
         playMusic(
             songs[0],
@@ -920,47 +746,7 @@ async function loadInitialSongs() {
 
 
 /* =========================================================
-   MAIN
-   ========================================================= */
-
-async function main() {
-
-    console.log("Starting Spotify Clone...");
-
-    /*
-       Display album cards
-    */
-
-    displayAlbums();
-
-
-    /*
-       Load Chill & Soul songs
-       into the left library.
-    */
-
-    await loadInitialSongs();
-
-
-    /*
-       Set initial volume
-    */
-
-    if (volumeInput) {
-
-        currentSong.volume =
-            Number(volumeInput.value) / 100;
-
-    }
-
-
-    console.log("Spotify Clone Ready");
-
-}
-
-
-/* =========================================================
-   START APP
-   ========================================================= */
+   START
+========================================================= */
 
 main();
