@@ -1,336 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Spotify Clone - Faizan Saqib</title>
-
+    <title>Spotify Clone</title>
+    <!-- Adding Inter font for a high-fidelity, polished look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Style.css">
 </head>
-
 <body>
-
     <main>
-
         <!-- ================= HEADER ================= -->
-
         <header class="top">
-
             <div class="first">
-
-                <img
-                    id="logo"
-                    class="invert"
-                    src="logo.svg"
-                    alt="Spotify Logo"
-                >
-
+                <img id="logo" class="invert" src="logo.svg" alt="Logo">
                 <div class="search-box">
-
-                    <img
-                        id="home"
-                        class="invert"
-                        src="home.svg"
-                        alt="Home"
-                    >
-
-                    <input
-                        type="text"
-                        placeholder="What do you want to play?"
-                    >
-
+                    <img id="home" class="invert" src="home.svg" alt="Home">
+                    <input type="text" placeholder="What do you want to play?">
                 </div>
-
             </div>
-
-
             <div class="buttons">
-
-                <button class="Signup">
-                    Sign Up
-                </button>
-
-                <button class="login">
-                    Log In
-                </button>
-
+                <button class="Signup">Sign Up</button>
+                <button class="login">Log In</button>
             </div>
-
         </header>
 
-
         <!-- ================= MAIN CONTENT ================= -->
-
         <div class="cont">
-
             <!-- ================= LIBRARY ================= -->
-
             <aside class="left">
-
                 <div class="library-header">
-
-                    <span class="library-title">
-                        Your Library
-                    </span>
-
-                    <span class="library-add">
-                        +
-                    </span>
-
+                    <span class="library-title">Your Library</span>
+                    <span class="library-add">+</span>
                 </div>
-
 
                 <div class="songlist">
-
                     <ul>
+                        <!-- Songs injected via JS -->
                     </ul>
-
                 </div>
 
-
                 <div class="sidebar-footer">
-
                     <span>Legal</span>
                     <span>Privacy</span>
                     <span>Cookies</span>
                     <span>About</span>
-
                 </div>
-
             </aside>
 
-
             <!-- ================= RIGHT SIDE ================= -->
-
             <section class="right">
-
                 <!-- ================= MUSIC CONTENT ================= -->
-
                 <div class="content-area">
-
                     <div class="section-heading">
-
-                        <p class="eyebrow">
-                            DISCOVER • YOUR MUSIC
-                        </p>
-
-                        <h1>
-                            Made for you
-                        </h1>
-
-                        <p class="section-subtitle">
-                            Find something you’ll love listening to.
-                        </p>
-
+                        <p class="eyebrow">DISCOVER • YOUR MUSIC</p>
+                        <!-- Made for you text made perfectly large -->
+                        <h1>Made for you</h1>
+                        <p class="section-subtitle">Find something you’ll love listening to.</p>
                     </div>
-
 
                     <!-- ================= ALBUM CARDS ================= -->
-
                     <div class="cards">
-
-
-                        <!-- CHILL & SOUL -->
-
-                        <div
-                            data-folder="cs"
-                            class="album-card"
-                        >
-
-                            <div class="album-content">
-
-                                <div class="album-tag">
-                                    CHILL
-                                </div>
-
-                                <h2>
-                                    Chill & Soul
-                                </h2>
-
-                                <h4>
-                                    A collection of relaxing and soulful tracks.
-                                </h4>
-
-                            </div>
-
-                        </div>
-
-
-                        <!-- NCS -->
-
-                        <div
-                            data-folder="ncs"
-                            class="album-card"
-                        >
-
-                            <div class="album-content">
-
-                                <div class="album-tag blue">
-                                    ENERGY
-                                </div>
-
-                                <h2>
-                                    NCS
-                                </h2>
-
-                                <h4>
-                                    Energetic tracks for every moment.
-                                </h4>
-
-                            </div>
-
-                        </div>
-
+                        <!-- Cards injected via JS to maintain cleanliness -->
                     </div>
-
                 </div>
-
 
                 <!-- ================= MUSIC PLAYER ================= -->
-
                 <div class="side">
-
-                    <div class="now-playing-label">
-                        NOW PLAYING
-                    </div>
-
-
+                    <div class="now-playing-label">NOW PLAYING</div>
                     <div class="player-content">
-
-
                         <!-- DISC -->
-
                         <div class="player-art">
-
                             <div id="disc"></div>
-
                         </div>
-
 
                         <!-- SONG INFO -->
-
                         <div class="infos">
-
-                            <div class="songinfo">
-                            </div>
-
-                            <div class="songtime">
-                                00:00 / 00:00
-                            </div>
-
+                            <div class="songinfo">Select a track</div>
+                            <div class="songtime">00:00 / 00:00</div>
                         </div>
-
 
                         <!-- SEEK BAR -->
-
                         <div class="seek-container">
-
                             <div class="seekbar">
-
                                 <div class="circle"></div>
-
                             </div>
-
                         </div>
-
 
                         <!-- CONTROLS -->
-
                         <div class="buttons player-buttons">
-
-
-                            <div
-                                id="previous"
-                                class="previous"
-                            >
-
-                                <img
-                                    class="invert"
-                                    src="previous.svg"
-                                    alt="Previous"
-                                >
-
+                            <div id="previous" class="control-btn">
+                                <img class="invert" src="previous.svg" alt="Previous">
                             </div>
-
-
-                            <div
-                                id="minus5sec"
-                                class="skip-btn"
-                            >
-                                −5s
+                            <div id="minus5sec" class="skip-btn">−5s</div>
+                            <div id="play" class="play">
+                                <img src="play.svg" alt="Play">
                             </div>
-
-
-                            <div
-                                id="play"
-                                class="play"
-                            >
-
-                                <img
-                                    class="invert"
-                                    src="play.svg"
-                                    alt="Play"
-                                >
-
+                            <div id="plus5sec" class="skip-btn">+5s</div>
+                            <div id="next" class="control-btn">
+                                <img class="invert" src="next.svg" alt="Next">
                             </div>
-
-
-                            <div
-                                id="plus5sec"
-                                class="skip-btn"
-                            >
-                                +5s
-                            </div>
-
-
-                            <div
-                                id="next"
-                                class="next"
-                            >
-
-                                <img
-                                    class="invert"
-                                    src="next.svg"
-                                    alt="Next"
-                                >
-
-                            </div>
-
                         </div>
-
 
                         <!-- VOLUME -->
-
-                        <div id="voulme">
-
-                            <span>
-                                VOL
-                            </span>
-
-                            <input
-                                type="range"
-                                min="0"
-                                max="100"
-                                value="100"
-                            >
-
+                        <div id="volume">
+                            <span>VOL</span>
+                            <input type="range" min="0" max="100" value="100">
                         </div>
-
                     </div>
-
                 </div>
-
             </section>
-
         </div>
-
     </main>
 
-
     <script src="Script.js"></script>
-
 </body>
-
 </html>
