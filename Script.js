@@ -75,16 +75,17 @@ function displayAlbums() {
     if (!cardcontainer) return;
 
     const albums = [
-        { folder: "cs", title: "Chill & Soul", subtitle: "Chill & Soul", desc: "A collection of relaxing and soulful tracks." },
-        { folder: "ncs", title: "NCS", subtitle: "NCS", desc: "Energetic tracks for every moment." }
+        { folder: "cs", tag: "CHILL", title: "Chill & Soul", desc: "A collection of relaxing and soulful tracks." },
+        { folder: "ncs", tag: "ENERGY", title: "NCS", desc: "Energetic tracks for every moment." }
     ];
 
     cardcontainer.innerHTML = "";
     albums.forEach(album => {
+        // Cleaned up the HTML injection for clear typography hierarchy
         cardcontainer.innerHTML += `
             <div data-folder="${album.folder}" class="album-card">
+                <div class="card-tag">${album.tag}</div>
                 <h2>${album.title}</h2>
-                <h2 style="font-size: 18px; margin-bottom: 8px;">${album.subtitle}</h2>
                 <h4>${album.desc}</h4>
             </div>
         `;
@@ -204,14 +205,11 @@ function setupVolume() {
     const volInput = document.querySelector("#volume input");
     if (!volInput) return;
 
-    // Set initial background fill (assuming starts at 100%)
     volInput.style.background = `linear-gradient(to right, var(--green) 100%, #333 100%)`;
 
     volInput.addEventListener("input", e => {
         const percent = e.target.value;
         currentSong.volume = percent / 100;
-        
-        // Dynamically fill the bar matching the exact volume level
         volInput.style.background = `linear-gradient(to right, var(--green) ${percent}%, #333 ${percent}%)`;
     });
 }
@@ -234,7 +232,6 @@ async function main() {
     setupVolume();
 }
 
-// CRITICAL FIX: This guarantees the HTML exists before JS tries to touch it.
 document.addEventListener("DOMContentLoaded", () => {
     main().catch(err => console.error("Initialization Error:", err));
 });
