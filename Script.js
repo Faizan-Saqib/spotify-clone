@@ -1,63 +1,48 @@
-console.log("Spotify Clone Started");
+console.log("Spotify Clone Loaded");
 
 let crruntsong = new Audio();
 
 let songs = [];
 let currFolder = "";
-let currentSongIndex = -1;
+let currentIndex = -1;
 
 
 /* =========================================================
-   SONG DATA
+   SONG DATABASE
+========================================================= */
+
+const songLists = {
+    "songs/cs": [
+        "Enlivening.mp3",
+        "Final Scene.mp3",
+        "Mawla Ya Salli Wa Sallim.mp3",
+        "Naat.mp3",
+        "Tajdar-e-Haram.mp3",
+        "Voyage.mp3",
+        "Wings of Freedom.mp3"
+    ],
+
+    "songs/ncs": [
+        "Crazy Frog.mp3"
+    ]
+};
+
+
+/* =========================================================
+   GET SONGS
 ========================================================= */
 
 async function getsongs(folder) {
 
     currFolder = folder;
 
-    const songLists = {
-
-        "songs/cs": [
-            "Enlivening.mp3",
-            "Final Scene.mp3",
-            "Mawla Ya Salli Wa Sallim.mp3",
-            "Naat.mp3",
-            "Tajdar-e-Haram.mp3",
-            "Voyage.mp3",
-            "Wings of Freedom.mp3"
-        ],
-
-        "songs/ncs": [
-            "Crazy Frog.mp3"
-        ]
-
-    };
-
     songs = songLists[folder] || [];
 
-    currentSongIndex = -1;
+    console.log("Current folder:", currFolder);
+    console.log("Songs:", songs);
 
     return songs;
 }
-
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
-
-const playButton = document.querySelector("#play");
-const previousButton = document.querySelector("#previous");
-const nextButton = document.querySelector("#next");
-
-const seekbar = document.querySelector(".seekbar");
-const circle = document.querySelector(".circle");
-
-const songInfo = document.querySelector(".songinfo");
-const songTime = document.querySelector(".songtime");
-
-const volumeInput = document.querySelector("#voulme input");
-
-const disc = document.querySelector("#disc");
 
 
 /* =========================================================
@@ -74,33 +59,24 @@ function formatTime(seconds) {
 
     const secs = Math.floor(seconds % 60);
 
-    return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    return (
+        String(mins).padStart(2, "0") +
+        ":" +
+        String(secs).padStart(2, "0")
+    );
 }
 
 
 /* =========================================================
-   UPDATE SEEK BAR
+   CLEAN SONG NAME
 ========================================================= */
 
-function updateSeekBar() {
+function cleanSongName(song) {
 
-    if (
-        !Number.isFinite(crruntsong.duration) ||
-        crruntsong.duration <= 0
-    ) {
-        seekbar.style.setProperty("--progress", "0%");
-        return;
-    }
-
-    const percent =
-        (crruntsong.currentTime / crruntsong.duration) * 100;
-
-    const safePercent =
-        Math.min(100, Math.max(0, percent));
-
-    seekbar.style.setProperty(
-        "--progress",
-        `${safePercent}%`
+    return decodeURIComponent(
+        song
+            .replaceAll("%20", " ")
+            .replaceAll("%5C", "")
     );
 }
 
@@ -111,24 +87,22 @@ function updateSeekBar() {
 
 function playMusic(track, pause = false) {
 
-    if (!track) {
-        return;
-    }
-
     const index = songs.indexOf(track);
 
     if (index !== -1) {
-        currentSongIndex = index;
+        currentIndex = index;
     }
 
     crruntsong.src =
         `/${currFolder}/${encodeURIComponent(track)}`;
 
-    songInfo.innerHTML = track;
+    document.querySelector(".songinfo").innerHTML =
+        cleanSongName(track);
 
-    songTime.innerHTML = "00:00 / 00:00";
+    document.querySelector(".songtime").innerHTML =
+        "00:00 / 00:00";
 
-    updateSeekBar();
+    updateSeekbar(0);
 
     if (!pause) {
 
@@ -136,10 +110,12 @@ function playMusic(track, pause = false) {
             .play()
             .then(() => {
 
-                playButton.querySelector("img").src =
+                document.querySelector("#play img").src =
                     "pause.svg";
 
-                disc.classList.add("rotate");
+                document
+                    .querySelector("#disc")
+                    .classList.add("rotate");
 
             })
             .catch(error => {
@@ -150,93 +126,55 @@ function playMusic(track, pause = false) {
                 );
 
             });
+    }
+    else {
 
-    } else {
-
-        playButton.querySelector("img").src =
+        document.querySelector("#play img").src =
             "play.svg";
 
-        disc.classList.remove("rotate");
+        document
+            .querySelector("#disc")
+            .classList.remove("rotate");
     }
 }
 
 
 /* =========================================================
-   DISPLAY SONGS
+   UPDATE SEEK BAR
 ========================================================= */
 
-function displaySongs() {
+function updateSeekbar(percent) {
 
-    const songul =
-        document.querySelector(".songlist ul");
+    const circle =
+        document.querySelector(".circle");
 
-    songul.innerHTML = "";
+    const seekbar =
+        document.querySelector(".seekbar");
 
-    songs.forEach((song, index) => {
+    if (!circle || !seekbar) return;
 
-        songul.innerHTML += `
+    percent = Math.max(
+        0,
+        Math.min(100, percent)
+    );
 
-            <li data-index="${index}">
+    circle.style.left = `${percent}%`;
 
-                <img
-                    class="invert"
-                    src="music.svg"
-                    alt=""
-                >
+    seekbar.style.setProperty(
+        "--progress",
+        `${percent}%`
+    );
 
-                <div class="info">
-
-                    <div>
-                        ${song}
-                    </div>
-
-                </div>
-
-                <div class="playnow">
-
-                    <span>
-                        play Now
-                    </span>
-
-                    <img
-                        class="invert"
-                        src="play.svg"
-                        alt=""
-                    >
-
-                </div>
-
-            </li>
-
-        `;
-
-    });
-
-
-    const songElements =
-        songul.querySelectorAll("li");
-
-
-    songElements.forEach(songElement => {
-
-        songElement.addEventListener(
-            "click",
-            () => {
-
-                const index =
-                    Number(songElement.dataset.index);
-
-                currentSongIndex = index;
-
-                playMusic(
-                    songs[index]
-                );
-
-            }
-        );
-
-    });
-
+    seekbar.style.setProperty(
+        "background",
+        `linear-gradient(
+            to right,
+            #00e5a0 0%,
+            #00e5a0 ${percent}%,
+            #575b5b ${percent}%,
+            #575b5b 100%
+        )`
+    );
 }
 
 
@@ -249,90 +187,152 @@ function displayAlbums() {
     const cardcontainer =
         document.querySelector(".cards");
 
-    cardcontainer.innerHTML = `
+    if (!cardcontainer) return;
 
-        <div
-            data-folder="cs"
-            class="album-card"
-        >
+    const albums = [
+        {
+            folder: "cs",
+            title: "Chill & Soul",
+            description:
+                "A collection of relaxing and soulful tracks."
+        },
 
-            <div class="album-content">
+        {
+            folder: "ncs",
+            title: "NCS",
+            description:
+                "Energetic tracks for every moment."
+        }
+    ];
 
-                <div class="album-tag">
-                    CHILL
+    cardcontainer.innerHTML = "";
+
+    albums.forEach(album => {
+
+        cardcontainer.innerHTML += `
+            <div
+                data-folder="${album.folder}"
+                class="album-card"
+            >
+
+                <div class="album-content">
+
+                    <h2>
+                        ${album.title}
+                    </h2>
+
+                    <h4>
+                        ${album.description}
+                    </h4>
+
                 </div>
 
-                <h2>
-                    Chill & Soul
-                </h2>
-
-                <h4>
-                    A collection of relaxing and soulful tracks.
-                </h4>
-
             </div>
-
-        </div>
-
-
-        <div
-            data-folder="ncs"
-            class="album-card"
-        >
-
-            <div class="album-content">
-
-                <div class="album-tag blue">
-                    ENERGY
-                </div>
-
-                <h2>
-                    NCS
-                </h2>
-
-                <h4>
-                    Energetic tracks for every moment.
-                </h4>
-
-            </div>
-
-        </div>
-
-    `;
-
-
-    const albumCards =
-        document.querySelectorAll(".album-card");
-
-
-    albumCards.forEach(card => {
-
-        card.addEventListener(
-            "click",
-            async () => {
-
-                const folder =
-                    `songs/${card.dataset.folder}`;
-
-                songs =
-                    await getsongs(folder);
-
-                displaySongs();
-
-                if (songs.length > 0) {
-
-                    playMusic(
-                        songs[0],
-                        true
-                    );
-
-                }
-
-            }
-        );
-
+        `;
     });
 
+    document
+        .querySelectorAll(".album-card")
+        .forEach(card => {
+
+            card.addEventListener(
+                "click",
+                async () => {
+
+                    const folder =
+                        `songs/${card.dataset.folder}`;
+
+                    await loadAlbum(folder);
+                }
+            );
+        });
+}
+
+
+/* =========================================================
+   LOAD ALBUM
+========================================================= */
+
+async function loadAlbum(folder) {
+
+    await getsongs(folder);
+
+    const songul =
+        document.querySelector(".songlist ul");
+
+    if (!songul) return;
+
+    songul.innerHTML = "";
+
+    songs.forEach(song => {
+
+        songul.innerHTML += `
+            <li data-song="${encodeURIComponent(song)}">
+
+                <img
+                    class="invert"
+                    src="music.svg"
+                    alt=""
+                >
+
+                <div class="info">
+
+                    <div>
+                        ${cleanSongName(song)}
+                    </div>
+
+                </div>
+
+                <div class="playnow">
+
+                    <span>
+                        Play Now
+                    </span>
+
+                    <img
+                        class="invert"
+                        src="play.svg"
+                        alt=""
+                    >
+
+                </div>
+
+            </li>
+        `;
+    });
+
+
+    /* ADD SONG CLICK EVENTS */
+
+    songul
+        .querySelectorAll("li")
+        .forEach((songElement, index) => {
+
+            songElement.addEventListener(
+                "click",
+                () => {
+
+                    currentIndex = index;
+
+                    playMusic(
+                        songs[index]
+                    );
+                }
+            );
+        });
+
+
+    /* LOAD FIRST SONG WITHOUT PLAYING */
+
+    if (songs.length > 0) {
+
+        currentIndex = 0;
+
+        playMusic(
+            songs[0],
+            true
+        );
+    }
 }
 
 
@@ -340,257 +340,148 @@ function displayAlbums() {
    PLAY / PAUSE
 ========================================================= */
 
-playButton.addEventListener(
-    "click",
-    () => {
+function togglePlay() {
 
-        if (!crruntsong.src) {
+    if (!crruntsong.src) return;
 
-            if (songs.length > 0) {
+    const playImage =
+        document.querySelector("#play img");
 
-                currentSongIndex = 0;
+    const disc =
+        document.querySelector("#disc");
 
-                playMusic(
-                    songs[0]
+
+    if (crruntsong.paused) {
+
+        crruntsong
+            .play()
+            .then(() => {
+
+                playImage.src =
+                    "pause.svg";
+
+                disc.classList.add(
+                    "rotate"
                 );
+            });
 
+    }
+    else {
+
+        crruntsong.pause();
+
+        playImage.src =
+            "play.svg";
+
+        disc.classList.remove(
+            "rotate"
+        );
+    }
+}
+
+
+/* =========================================================
+   NEXT SONG
+========================================================= */
+
+function nextSong() {
+
+    if (!songs.length) return;
+
+    if (
+        currentIndex + 1 <
+        songs.length
+    ) {
+
+        currentIndex++;
+
+        playMusic(
+            songs[currentIndex]
+        );
+    }
+}
+
+
+/* =========================================================
+   PREVIOUS SONG
+========================================================= */
+
+function previousSong() {
+
+    if (!songs.length) return;
+
+    if (currentIndex - 1 >= 0) {
+
+        currentIndex--;
+
+        playMusic(
+            songs[currentIndex]
+        );
+    }
+}
+
+
+/* =========================================================
+   SEEK BAR CLICK
+========================================================= */
+
+function setupSeekbar() {
+
+    const seekbar =
+        document.querySelector(".seekbar");
+
+    if (!seekbar) return;
+
+
+    seekbar.addEventListener(
+        "click",
+        event => {
+
+            if (!Number.isFinite(
+                crruntsong.duration
+            )) {
+                return;
             }
 
-            return;
-        }
+
+            const rect =
+                seekbar.getBoundingClientRect();
 
 
-        if (crruntsong.paused) {
+            /*
+             * IMPORTANT:
+             *
+             * Horizontal bar =
+             * clientX / width
+             *
+             * NOT offsetY / height
+             */
 
-            crruntsong
-                .play()
-                .then(() => {
-
-                    playButton.querySelector("img").src =
-                        "pause.svg";
-
-                    disc.classList.add("rotate");
-
-                });
-
-        } else {
-
-            crruntsong.pause();
-
-            playButton.querySelector("img").src =
-                "play.svg";
-
-            disc.classList.remove("rotate");
-        }
-
-    }
-);
+            const clickX =
+                event.clientX - rect.left;
 
 
-/* =========================================================
-   TIME UPDATE
-========================================================= */
-
-crruntsong.addEventListener(
-    "timeupdate",
-    () => {
-
-        songTime.innerHTML =
-            `${formatTime(crruntsong.currentTime)} / ${formatTime(crruntsong.duration)}`;
-
-        updateSeekBar();
-
-    }
-);
+            let percent =
+                clickX / rect.width;
 
 
-/* =========================================================
-   METADATA LOADED
-========================================================= */
-
-crruntsong.addEventListener(
-    "loadedmetadata",
-    () => {
-
-        songTime.innerHTML =
-            `${formatTime(crruntsong.currentTime)} / ${formatTime(crruntsong.duration)}`;
-
-        updateSeekBar();
-
-    }
-);
+            percent =
+                Math.max(
+                    0,
+                    Math.min(1, percent)
+                );
 
 
-/* =========================================================
-   SONG ENDED
-========================================================= */
+            crruntsong.currentTime =
+                crruntsong.duration *
+                percent;
 
-crruntsong.addEventListener(
-    "ended",
-    () => {
 
-        if (
-            currentSongIndex >= 0 &&
-            currentSongIndex < songs.length - 1
-        ) {
-
-            currentSongIndex++;
-
-            playMusic(
-                songs[currentSongIndex]
+            updateSeekbar(
+                percent * 100
             );
-
-        } else {
-
-            playButton.querySelector("img").src =
-                "play.svg";
-
-            disc.classList.remove("rotate");
-
-            updateSeekBar();
         }
-
-    }
-);
-
-
-/* =========================================================
-   SEEK BAR
-   FIXED: HORIZONTAL X POSITION
-========================================================= */
-
-seekbar.addEventListener(
-    "click",
-    (event) => {
-
-        if (
-            !Number.isFinite(crruntsong.duration) ||
-            crruntsong.duration <= 0
-        ) {
-            return;
-        }
-
-
-        const rect =
-            seekbar.getBoundingClientRect();
-
-
-        const clickX =
-            event.clientX - rect.left;
-
-
-        let percent =
-            clickX / rect.width;
-
-
-        percent =
-            Math.min(
-                1,
-                Math.max(0, percent)
-            );
-
-
-        crruntsong.currentTime =
-            crruntsong.duration * percent;
-
-
-        updateSeekBar();
-
-    }
-);
-
-
-/* =========================================================
-   SEEK BAR DRAGGING
-========================================================= */
-
-let isDragging = false;
-
-
-seekbar.addEventListener(
-    "pointerdown",
-    (event) => {
-
-        if (
-            !Number.isFinite(crruntsong.duration) ||
-            crruntsong.duration <= 0
-        ) {
-            return;
-        }
-
-        isDragging = true;
-
-        seekbar.setPointerCapture(
-            event.pointerId
-        );
-
-        seekToPosition(event);
-
-    }
-);
-
-
-seekbar.addEventListener(
-    "pointermove",
-    (event) => {
-
-        if (!isDragging) {
-            return;
-        }
-
-        seekToPosition(event);
-
-    }
-);
-
-
-seekbar.addEventListener(
-    "pointerup",
-    () => {
-
-        isDragging = false;
-
-    }
-);
-
-
-seekbar.addEventListener(
-    "pointercancel",
-    () => {
-
-        isDragging = false;
-
-    }
-);
-
-
-function seekToPosition(event) {
-
-    const rect =
-        seekbar.getBoundingClientRect();
-
-
-    const position =
-        event.clientX - rect.left;
-
-
-    let percent =
-        position / rect.width;
-
-
-    percent =
-        Math.min(
-            1,
-            Math.max(0, percent)
-        );
-
-
-    crruntsong.currentTime =
-        crruntsong.duration * percent;
-
-
-    updateSeekBar();
-
+    );
 }
 
 
@@ -598,150 +489,263 @@ function seekToPosition(event) {
    -5 SECONDS
 ========================================================= */
 
-document
-    .querySelector("#minus5sec")
-    .addEventListener(
-        "click",
-        (event) => {
+function setupSkipButtons() {
 
-            event.stopPropagation();
+    const minus =
+        document.querySelector("#minus5sec");
 
-            if (
-                !Number.isFinite(crruntsong.duration)
-            ) {
-                return;
+    const plus =
+        document.querySelector("#plus5sec");
+
+
+    if (minus) {
+
+        minus.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                crruntsong.currentTime =
+                    Math.max(
+                        0,
+                        crruntsong.currentTime - 5
+                    );
             }
+        );
+    }
 
-            crruntsong.currentTime =
-                Math.max(
-                    0,
-                    crruntsong.currentTime - 5
-                );
 
+    if (plus) {
+
+        plus.addEventListener(
+            "click",
+            event => {
+
+                event.stopPropagation();
+
+                if (!Number.isFinite(
+                    crruntsong.duration
+                )) {
+                    return;
+                }
+
+                crruntsong.currentTime =
+                    Math.min(
+                        crruntsong.duration,
+                        crruntsong.currentTime + 5
+                    );
+            }
+        );
+    }
+}
+
+
+/* =========================================================
+   AUDIO EVENTS
+========================================================= */
+
+function setupAudioEvents() {
+
+    /* METADATA */
+
+    crruntsong.addEventListener(
+        "loadedmetadata",
+        () => {
+
+            document.querySelector(
+                ".songtime"
+            ).innerHTML =
+                `00:00 / ${formatTime(
+                    crruntsong.duration
+                )}`;
+
+            updateSeekbar(0);
         }
     );
 
 
-/* =========================================================
-   +5 SECONDS
-========================================================= */
+    /* TIME UPDATE */
 
-document
-    .querySelector("#plus5sec")
-    .addEventListener(
-        "click",
-        (event) => {
+    crruntsong.addEventListener(
+        "timeupdate",
+        () => {
 
-            event.stopPropagation();
-
-            if (
-                !Number.isFinite(crruntsong.duration)
-            ) {
+            if (!Number.isFinite(
+                crruntsong.duration
+            )) {
                 return;
             }
 
-            crruntsong.currentTime =
-                Math.min(
-                    crruntsong.duration,
-                    crruntsong.currentTime + 5
+
+            const current =
+                formatTime(
+                    crruntsong.currentTime
                 );
 
+
+            const duration =
+                formatTime(
+                    crruntsong.duration
+                );
+
+
+            document.querySelector(
+                ".songtime"
+            ).innerHTML =
+                `${current} / ${duration}`;
+
+
+            const percent =
+                (
+                    crruntsong.currentTime /
+                    crruntsong.duration
+                ) * 100;
+
+
+            updateSeekbar(percent);
         }
     );
 
 
-/* =========================================================
-   PREVIOUS
-========================================================= */
+    /* PLAY */
 
-previousButton.addEventListener(
-    "click",
-    () => {
+    crruntsong.addEventListener(
+        "play",
+        () => {
 
-        if (!songs.length) {
-            return;
+            document.querySelector(
+                "#play img"
+            ).src = "pause.svg";
+
+
+            document.querySelector(
+                "#disc"
+            ).classList.add("rotate");
         }
+    );
 
-        if (currentSongIndex > 0) {
 
-            currentSongIndex--;
+    /* PAUSE */
 
-            playMusic(
-                songs[currentSongIndex]
-            );
+    crruntsong.addEventListener(
+        "pause",
+        () => {
 
+            document.querySelector(
+                "#play img"
+            ).src = "play.svg";
+
+
+            document.querySelector(
+                "#disc"
+            ).classList.remove("rotate");
         }
-
-    }
-);
+    );
 
 
-/* =========================================================
-   NEXT
-========================================================= */
+    /* SONG ENDED */
 
-nextButton.addEventListener(
-    "click",
-    () => {
+    crruntsong.addEventListener(
+        "ended",
+        () => {
 
-        if (!songs.length) {
-            return;
+            if (
+                currentIndex + 1 <
+                songs.length
+            ) {
+
+                currentIndex++;
+
+                playMusic(
+                    songs[currentIndex]
+                );
+            }
+            else {
+
+                document.querySelector(
+                    "#play img"
+                ).src = "play.svg";
+
+                document.querySelector(
+                    "#disc"
+                ).classList.remove(
+                    "rotate"
+                );
+            }
         }
-
-        if (
-            currentSongIndex <
-            songs.length - 1
-        ) {
-
-            currentSongIndex++;
-
-            playMusic(
-                songs[currentSongIndex]
-            );
-
-        }
-
-    }
-);
+    );
+}
 
 
 /* =========================================================
    VOLUME
 ========================================================= */
 
-volumeInput.addEventListener(
-    "input",
-    (event) => {
+function setupVolume() {
 
-        crruntsong.volume =
-            Number(event.target.value) / 100;
+    const volume =
+        document.querySelector(
+            "#voulme input"
+        );
 
-    }
-);
+    if (!volume) return;
+
+
+    volume.addEventListener(
+        "input",
+        event => {
+
+            crruntsong.volume =
+                event.target.value / 100;
+        }
+    );
+}
 
 
 /* =========================================================
-   INITIALIZATION
+   MAIN
 ========================================================= */
 
 async function main() {
 
-    songs =
-        await getsongs("songs/cs");
+    await getsongs("songs/cs");
 
     displayAlbums();
 
-    displaySongs();
+    await loadAlbum("songs/cs");
 
-    if (songs.length > 0) {
-
-        playMusic(
-            songs[0],
-            true
+    document
+        .querySelector("#play")
+        .addEventListener(
+            "click",
+            togglePlay
         );
 
-    }
 
+    document
+        .querySelector("#previous")
+        .addEventListener(
+            "click",
+            previousSong
+        );
+
+
+    document
+        .querySelector("#next")
+        .addEventListener(
+            "click",
+            nextSong
+        );
+
+
+    setupSeekbar();
+
+    setupSkipButtons();
+
+    setupAudioEvents();
+
+    setupVolume();
 }
 
 
